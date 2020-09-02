@@ -27,8 +27,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-	void MoveForward(float AxisValue);
-	void MoveRight(float AxisValue);
 	UPROPERTY(EditDefaultsOnly)
 		float Speed = 1.0f;
 	UFUNCTION(BlueprintPure)
@@ -48,5 +46,10 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class ABaseWeapon> WeaponClass;
 	class ABaseWeapon* Weapon = nullptr;
+
 	void SetupCharacterMovement();
+
+	void MoveForward(float AxisValue);
+	void MoveRight(float AxisValue);
+	void Attack();
 };

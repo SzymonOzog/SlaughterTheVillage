@@ -47,6 +47,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ABaseCharacter::Attack);
 
 }
 
@@ -84,6 +85,15 @@ void ABaseCharacter::MoveRight(float AxisValue)
 
 		const FVector& Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(Direction, AxisValue * Speed);
+	}
+}
+
+void ABaseCharacter::Attack()
+{
+	if (Weapon)
+	{
+		Weapon->Attack();	
+		UE_LOG(LogTemp, Warning, TEXT("Atttacked with %s"), *Weapon->GetName())
 	}
 }
 
