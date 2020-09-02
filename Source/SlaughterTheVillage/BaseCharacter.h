@@ -29,6 +29,8 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
+	UPROPERTY(EditDefaultsOnly)
+		float Speed = 1.0f;
 	UFUNCTION(BlueprintPure)
 		inline bool IsPlayerDead() const { return CurrentHealth <= 0; }
 	UFUNCTION(BlueprintPure)
