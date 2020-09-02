@@ -5,17 +5,17 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
 // Sets default values for this component's properties
-UBaseWeapon::UBaseWeapon()
+ABaseWeapon::ABaseWeapon()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 }
 
 
 // Called when the game starts
-void UBaseWeapon::BeginPlay()
+void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -25,14 +25,13 @@ void UBaseWeapon::BeginPlay()
 
 
 // Called every frame
-void UBaseWeapon::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void ABaseWeapon::Tick(float DeltaTime)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::Tick(DeltaTime);
 
-	// ...
 }
 
-void UBaseWeapon::Attack()
+void ABaseWeapon::Attack()
 {
 }
 

@@ -8,13 +8,13 @@
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SLAUGHTERTHEVILLAGE_API UBaseWeapon : public UActorComponent
+class SLAUGHTERTHEVILLAGE_API ABaseWeapon : public AActor
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UBaseWeapon();
+	ABaseWeapon();
 
 protected:
 	// Called when the game starts
@@ -22,7 +22,7 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void Tick(float DeltaTime) override;
 	virtual void Attack();
 	UPROPERTY(EditDefaultsOnly)
 		float Damage;
