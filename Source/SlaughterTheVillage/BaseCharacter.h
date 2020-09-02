@@ -37,7 +37,13 @@ public:
 		inline float GetHealthPercent() const { return CurrentHealth / MaxHealth; }
 private:
 	UPROPERTY(EditDefaultsOnly)
+		float AirControl = 0.5f;
+	UPROPERTY(EditDefaultsOnly)
+		float JumpHeight = 600.0f;
+	UPROPERTY(EditDefaultsOnly)
 		float MaxHealth = 100.0f;
 	UPROPERTY(VisibleAnywhere)
 		float CurrentHealth;
+
+	void SetupCharacterMovement();
 };
