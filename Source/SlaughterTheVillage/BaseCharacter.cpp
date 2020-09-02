@@ -2,6 +2,7 @@
 
 
 #include "BaseCharacter.h"
+#include "BaseWeapon.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
@@ -19,6 +20,14 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	CurrentHealth = MaxHealth;
 	SetupCharacterMovement();
+	if (WeaponClass)
+	{
+		Weapon = NewObject<ABaseWeapon>(this, WeaponClass);
+		if (Weapon)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Created weapon from %s"), *Weapon->GetName())
+		}
+	}
 }
 
 // Called every frame

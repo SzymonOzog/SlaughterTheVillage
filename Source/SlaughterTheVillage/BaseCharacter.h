@@ -45,5 +45,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		float CurrentHealth;
 
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class ABaseWeapon> WeaponClass;
+	class ABaseWeapon* Weapon = nullptr;
 	void SetupCharacterMovement();
 };
