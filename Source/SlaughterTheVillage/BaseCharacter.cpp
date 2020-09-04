@@ -31,11 +31,37 @@ void ABaseCharacter::BeginPlay()
 	}
 }
 
+void ABaseCharacter::SetupCharacterMovement()
+{
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+	GetCharacterMovement()->AirControl = this->AirControl;
+	GetCharacterMovement()->MaxWalkSpeed *= Speed;
+	GetCharacterMovement()->JumpZVelocity = JumpHeight;
+}
+
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	CurrentHealth = FMath::Clamp(CurrentHealth - DamageApplied, 0.0f, MaxHealth);
+	UE_LOG(LogTemp, Warning, TEXT("%s's health is %f"), *GetName(), CurrentHealth)
+		if (IsPlayerDead())
+		{
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			DetachFromControllerPendingDestroy();
+		}
+	return DamageAmount;
 }
 
 // Called to bind functionality to input
@@ -51,19 +77,6 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ABaseCharacter::Attack);
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ABaseCharacter::StopAttacking);
 
-}
-
-float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	CurrentHealth = FMath::Clamp(CurrentHealth - DamageApplied, 0.0f, MaxHealth);
-	UE_LOG(LogTemp, Warning, TEXT("%s's health is %f"), *GetName(), CurrentHealth)
-	if (IsPlayerDead())
-	{
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		DetachFromControllerPendingDestroy();
-	}
-	return DamageAmount;
 }
 
 void ABaseCharacter::MoveForward(float AxisValue)
@@ -92,6 +105,9 @@ void ABaseCharacter::MoveRight(float AxisValue)
 
 void ABaseCharacter::Attack()
 {
+	//attacks are made with respect to controller rotation so
+	//we are rotating to prevent attacking with our back
+	RotateToControllerYaw();
 	bIsAttacking = true;
 	if (Weapon)
 	{
@@ -100,21 +116,16 @@ void ABaseCharacter::Attack()
 	}
 }
 
+void ABaseCharacter::RotateToControllerYaw()
+{
+	FRotator playerRotation = GetActorRotation();
+	FRotator controllerRotation = GetControlRotation();
+	playerRotation.Yaw = controllerRotation.Yaw;
+	SetActorRotation(playerRotation);
+}
+
 void ABaseCharacter::StopAttacking()
 {
 	bIsAttacking = false;
-}
-
-void ABaseCharacter::SetupCharacterMovement()
-{
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
-
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-	GetCharacterMovement()->AirControl = this->AirControl;
-	GetCharacterMovement()->MaxWalkSpeed *= Speed;
-	GetCharacterMovement()->JumpZVelocity = JumpHeight;
 }
 
