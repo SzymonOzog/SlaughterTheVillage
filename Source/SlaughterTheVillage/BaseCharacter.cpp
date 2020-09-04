@@ -25,6 +25,7 @@ void ABaseCharacter::BeginPlay()
 		Weapon = NewObject<ABaseWeapon>(this, WeaponClass);
 		if (Weapon)
 		{
+			Weapon->SetOwner(this);
 			UE_LOG(LogTemp, Warning, TEXT("Created weapon from %s"), *Weapon->GetName())
 		}
 	}
@@ -48,6 +49,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ABaseCharacter::Attack);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ABaseCharacter::StopAttacking);
 
 }
 
@@ -90,11 +92,17 @@ void ABaseCharacter::MoveRight(float AxisValue)
 
 void ABaseCharacter::Attack()
 {
+	bIsAttacking = true;
 	if (Weapon)
 	{
 		Weapon->Attack();	
 		UE_LOG(LogTemp, Warning, TEXT("Atttacked with %s"), *Weapon->GetName())
 	}
+}
+
+void ABaseCharacter::StopAttacking()
+{
+	bIsAttacking = false;
 }
 
 void ABaseCharacter::SetupCharacterMovement()

@@ -28,21 +28,25 @@ public:
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	UPROPERTY(EditDefaultsOnly)
-		float Speed = 1.0f;
+	float Speed = 1.0f;
 	UFUNCTION(BlueprintPure)
-		inline bool IsPlayerDead() const { return CurrentHealth <= 0; }
+	inline bool IsPlayerDead() const { return CurrentHealth <= 0; }
 	UFUNCTION(BlueprintPure)
-		inline float GetHealthPercent() const { return CurrentHealth / MaxHealth; }
+	inline float GetHealthPercent() const { return CurrentHealth / MaxHealth; }
+	
+	inline bool IsCharacterAttacking() { return bIsAttacking; }
 private:
 	UPROPERTY(EditDefaultsOnly)
-		float AirControl = 0.5f;
+	float AirControl = 0.5f;
 	UPROPERTY(EditDefaultsOnly)
-		float JumpHeight = 600.0f;
+	float JumpHeight = 600.0f;
 	UPROPERTY(EditDefaultsOnly)
-		float MaxHealth = 100.0f;
+	float MaxHealth = 100.0f;
 	UPROPERTY(VisibleAnywhere)
-		float CurrentHealth;
+	float CurrentHealth;
 
+	bool bIsAttacking = false;
+	
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class ABaseWeapon> WeaponClass;
 	class ABaseWeapon* Weapon = nullptr;
@@ -52,4 +56,6 @@ private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void Attack();
+	void StopAttacking();
+
 };
