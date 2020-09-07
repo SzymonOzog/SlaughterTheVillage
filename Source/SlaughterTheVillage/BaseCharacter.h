@@ -53,6 +53,8 @@ private:
 
 	void SetupCharacterMovement();
 
+	void HandleDeath();
+
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void Attack();

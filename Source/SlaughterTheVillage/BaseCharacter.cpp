@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 #include "BaseWeapon.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 
@@ -58,11 +59,20 @@ float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	UE_LOG(LogTemp, Warning, TEXT("%s's health is %f"), *GetName(), CurrentHealth)
 		if (IsPlayerDead())
 		{
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			DetachFromControllerPendingDestroy();
+			HandleDeath();
 		}
 	return DamageAmount;
 }
+
+
+void ABaseCharacter::HandleDeath()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	DetachFromControllerPendingDestroy();
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetCollisionProfileName(TEXT("BlockAll"));
+}
+
 
 // Called to bind functionality to input
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
