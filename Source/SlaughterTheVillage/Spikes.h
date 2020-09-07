@@ -28,7 +28,9 @@ public:
 		USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Mesh = nullptr;
+	UPROPERTY(EditAnywhere)
+		float ActivationAngleDegrees = 45.0f;
 	UFUNCTION()
-		virtual void OnSpikesOverlap(AActor* OverlappedActor, AActor* OtherActor);
+		virtual void OnSpikesHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
 };
