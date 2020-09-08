@@ -5,25 +5,33 @@
 #include "EngineGlobals.h"
 #include "PushComponent.h"
 #include "BaseCharacter.h"
+#include "GameFramework/PawnMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 void AAirMissile::applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (Cast<ABaseCharacter>(OtherActor))
+	if (ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
 	{
 		FVector EnemyLocation = OtherActor->GetActorLocation();
 		FVector PlayerLocation = SelfActor->GetActorLocation();
 		FVector MoveAmount = calculateMoveAmount(PlayerLocation, EnemyLocation);
-		UPushComponent* PushComponent = NewObject<UPushComponent>(OtherActor, TEXT("PushComponent"));
-		PushComponent->SetDestination(EnemyLocation + MoveAmount);
-		OtherActor->AddInstanceComponent(PushComponent);
-		PushComponent->RegisterComponent();
+		UE_LOG(LogTemp, Warning, TEXT("MoveAmount is %s"), *MoveAmount.ToString())
+		UE_LOG(LogTemp, Warning, TEXT("Old velocity is %s"), *Character->GetMovementComponent()->Velocity.ToString())
+		//Velocity behaves different while airbourne so it needs to be scaled down
+		//to avoid launching player too far
+		if (Character->GetMovementComponent()->IsFalling())
+		{
+			MoveAmount /= AirbourneScaleDown; 
+		}
+		Character->GetMovementComponent()->Velocity += MoveAmount;
+		UE_LOG(LogTemp, Warning, TEXT("New velocity is %s"), *Character->GetMovementComponent()->Velocity.ToString())
 	}
 }
 
 FVector AAirMissile::calculateMoveAmount(const FVector& PlayerLocation, const FVector& EnemyLocation)
 {
 	FVector MoveAmount = EnemyLocation - PlayerLocation;
-	float Scale = MoveAmount.GetAbsMax() / PushDistance;
-	MoveAmount /= Scale;
+	MoveAmount.Normalize();
+	MoveAmount *= PushStrength;
 	return MoveAmount;
 }
