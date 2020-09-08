@@ -43,7 +43,12 @@ void ASpikes::OnSpikesHit(AActor* SelfActor, AActor* OtherActor, FVector NormalI
 		float DotProduct = FVector::DotProduct(SpikesRotationVector, CharacterPositionInSpikesSpace);
 		if (DotProduct >= FMath::Cos(ActivationAngleDegrees))
 		{
-			//Character->TakeDamage(Damage, FDamageEvent(), nullptr, this);
+			Character->TakeDamage(Damage, FDamageEvent(), nullptr, this);
+			//Push the player back to avoid triggering OnHit again
+			if (!Character->IsPlayerDead())
+			{
+				Character->SetActorLocation(Character->GetActorLocation() + CharacterPositionInSpikesSpace * PushBackValue);
+			}
 		}
 		UE_LOG(LogTemp, Warning, TEXT("Dot Product is %f"), DotProduct)
 	}

@@ -30,6 +30,8 @@ public:
 		UStaticMeshComponent* Mesh = nullptr;
 	UPROPERTY(EditAnywhere)
 		float ActivationAngleDegrees = 45.0f;
+	UPROPERTY(EditAnywhere)
+		float PushBackValue = 100.0f;
 	UFUNCTION()
 		virtual void OnSpikesHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
