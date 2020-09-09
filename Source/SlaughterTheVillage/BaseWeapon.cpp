@@ -11,6 +11,7 @@ ABaseWeapon::ABaseWeapon()
 	// off to improve performance if you don't need them.
 	PrimaryActorTick.bCanEverTick = true;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 }
 
 
@@ -18,9 +19,9 @@ ABaseWeapon::ABaseWeapon()
 void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
+	UE_LOG(LogTemp, Warning, TEXT("%s BeginPlay"), *GetName());
+	Range = Mesh->CalcBounds(FTransform()).BoxExtent.Z;
+	UE_LOG(LogTemp, Warning, TEXT("%s range is %f"), *GetName(), Range);
 }
 
 
@@ -28,7 +29,6 @@ void ABaseWeapon::BeginPlay()
 void ABaseWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ABaseWeapon::Attack()
