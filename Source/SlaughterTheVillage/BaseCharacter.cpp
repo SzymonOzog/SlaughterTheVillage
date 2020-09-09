@@ -21,9 +21,9 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	CurrentHealth = MaxHealth;
 	SetupCharacterMovement();
+	TSubclassOf<ABaseWeapon> WeaponClass = WeaponClasses[FMath::RandRange(0, WeaponClasses.Num() - 1)];
 	if (WeaponClass)
 	{
-	 
 		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(WeaponClass);
 		if (Weapon)
 		{
@@ -121,6 +121,7 @@ void ABaseCharacter::Attack()
 	//we are rotating to prevent attacking with our back
 	RotateToControllerYaw();
 	bIsAttacking = true;
+	UE_LOG(LogTemp, Warning, TEXT("Atttacked"))
 	if (Weapon)
 	{
 		Weapon->Attack();	

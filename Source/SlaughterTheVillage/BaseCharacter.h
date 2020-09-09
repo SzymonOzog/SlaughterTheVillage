@@ -49,7 +49,7 @@ private:
 	bool bIsAttacking = false;
 	
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class ABaseWeapon> WeaponClass;
+		TArray<TSubclassOf<class ABaseWeapon>> WeaponClasses;
 	UPROPERTY()
 	class ABaseWeapon* Weapon = nullptr;
 
