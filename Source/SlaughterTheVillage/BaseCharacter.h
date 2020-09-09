@@ -34,6 +34,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	inline float GetHealthPercent() const { return CurrentHealth / MaxHealth; }
 	
+	void Attack();
 	inline bool IsCharacterAttacking() { return bIsAttacking; }
 private:
 	UPROPERTY(EditDefaultsOnly)
@@ -49,6 +50,7 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class ABaseWeapon> WeaponClass;
+	UPROPERTY()
 	class ABaseWeapon* Weapon = nullptr;
 
 	void SetupCharacterMovement();
@@ -57,7 +59,6 @@ private:
 
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
-	void Attack();
 	void RotateToControllerYaw();
 	void StopAttacking();
 

@@ -23,9 +23,11 @@ void ABaseCharacter::BeginPlay()
 	SetupCharacterMovement();
 	if (WeaponClass)
 	{
-		Weapon = NewObject<ABaseWeapon>(this, WeaponClass);
+	 
+		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(WeaponClass);
 		if (Weapon)
 		{
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 			Weapon->SetOwner(this);
 			UE_LOG(LogTemp, Warning, TEXT("Created weapon from %s"), *Weapon->GetName())
 		}
