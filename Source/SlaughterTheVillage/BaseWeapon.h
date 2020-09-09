@@ -24,6 +24,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void Attack();
+	UPROPERTY(VisibleAnywhere)
+		USceneComponent* Root;
 	UPROPERTY(EditDefaultsOnly)
 		float Damage;
 	UPROPERTY(EditDefaultsOnly)

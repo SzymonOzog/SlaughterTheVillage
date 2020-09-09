@@ -10,8 +10,12 @@ ABaseWeapon::ABaseWeapon()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryActorTick.bCanEverTick = true;
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = Root;
+
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	Mesh->AttachTo(Root);
 }
 
 
@@ -33,5 +37,6 @@ void ABaseWeapon::Tick(float DeltaTime)
 
 void ABaseWeapon::Attack()
 {
+
 }
 
