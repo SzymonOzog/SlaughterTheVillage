@@ -1,0 +1,53 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "PlayerCharacter.h"
+#include "BaseMissile.h"
+
+APlayerCharacter::APlayerCharacter()
+{
+
+}
+void APlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	SetupMissileSpawnParams();
+}
+
+void APlayerCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void APlayerCharacter::Attack()
+{
+	Super::Attack();
+	UE_LOG(LogTemp, Warning, TEXT("Atttacked in player class"))
+	if (MissileClass)
+	{
+		GetWorld()->SpawnActor<ABaseMissile>(MissileClass, CalculateMissileSpawnTransform(), MissileSpawnParams);
+	}
+}
+
+void APlayerCharacter::SetupMissileSpawnParams()
+{
+	MissileSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	MissileSpawnParams.bNoFail = true;
+	MissileSpawnParams.Owner = this;
+	MissileSpawnParams.Instigator = this;
+}
+
+FTransform APlayerCharacter::CalculateMissileSpawnTransform()
+{
+	FTransform MissileSpawnTransform;
+	FRotator ControllerRotation = GetControlRotation();
+	MissileSpawnTransform.SetLocation(ControllerRotation.Vector() * 150.0f + GetActorLocation());
+	MissileSpawnTransform.SetRotation(ControllerRotation.Quaternion());
+	return MissileSpawnTransform;
+}
+

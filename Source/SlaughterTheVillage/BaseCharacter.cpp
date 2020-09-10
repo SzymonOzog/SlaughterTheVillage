@@ -21,19 +21,7 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	CurrentHealth = MaxHealth;
 	SetupCharacterMovement();
-	TSubclassOf<ABaseWeapon> WeaponClass = WeaponClasses[FMath::RandRange(0, WeaponClasses.Num() - 1)];
 	PlayerReach = CalculatePlayerReach();
-	if (WeaponClass)
-	{
-		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(WeaponClass);
-		if (Weapon)
-		{
-			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-			Weapon->SetOwner(this);
-			Weapon->SetInstigator(this);
-			UE_LOG(LogTemp, Warning, TEXT("Created weapon from %s"), *Weapon->GetName())
-		}
-	}
 }
 
 void ABaseCharacter::SetupCharacterMovement()
@@ -132,11 +120,7 @@ void ABaseCharacter::Attack()
 	RotateToControllerYaw();
 	bIsAttacking = true;
 	UE_LOG(LogTemp, Warning, TEXT("Atttacked"))
-	if (Weapon)
-	{
-		Weapon->Attack();	
-		UE_LOG(LogTemp, Warning, TEXT("Atttacked with %s"), *Weapon->GetName())
-	}
+
 }
 
 void ABaseCharacter::RotateToControllerYaw()

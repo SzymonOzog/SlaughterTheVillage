@@ -35,7 +35,7 @@ public:
 	inline float GetHealthPercent() const { return CurrentHealth / MaxHealth; }
 	inline float GetPlayerReach() const { return PlayerReach; }
 
-	void Attack();
+	virtual void Attack();
 	inline bool IsCharacterAttacking() { return bIsAttacking; }
 private:
 	UPROPERTY(EditDefaultsOnly)
@@ -50,19 +50,16 @@ private:
 	float PlayerReach;
 
 	bool bIsAttacking = false;
-	
-	UPROPERTY(EditDefaultsOnly)
-		TArray<TSubclassOf<class ABaseWeapon>> WeaponClasses;
-	UPROPERTY()
-	class ABaseWeapon* Weapon = nullptr;
 
 	void SetupCharacterMovement();
 	float CalculatePlayerReach();
 	void HandleDeath();
+	void RotateToControllerYaw();
 
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
-	void RotateToControllerYaw();
 	void StopAttacking();
+
+
 
 };
