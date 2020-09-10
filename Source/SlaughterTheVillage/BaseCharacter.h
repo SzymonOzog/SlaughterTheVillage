@@ -33,7 +33,8 @@ public:
 	inline bool IsPlayerDead() const { return CurrentHealth <= 0; }
 	UFUNCTION(BlueprintPure)
 	inline float GetHealthPercent() const { return CurrentHealth / MaxHealth; }
-	
+	inline float GetPlayerReach() const { return PlayerReach; }
+
 	void Attack();
 	inline bool IsCharacterAttacking() { return bIsAttacking; }
 private:
@@ -46,6 +47,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	float CurrentHealth;
 
+	float PlayerReach;
+
 	bool bIsAttacking = false;
 	
 	UPROPERTY(EditDefaultsOnly)
@@ -54,7 +57,7 @@ private:
 	class ABaseWeapon* Weapon = nullptr;
 
 	void SetupCharacterMovement();
-
+	float CalculatePlayerReach();
 	void HandleDeath();
 
 	void MoveForward(float AxisValue);

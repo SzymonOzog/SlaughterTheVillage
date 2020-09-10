@@ -22,6 +22,7 @@ void ABaseCharacter::BeginPlay()
 	CurrentHealth = MaxHealth;
 	SetupCharacterMovement();
 	TSubclassOf<ABaseWeapon> WeaponClass = WeaponClasses[FMath::RandRange(0, WeaponClasses.Num() - 1)];
+	PlayerReach = CalculatePlayerReach();
 	if (WeaponClass)
 	{
 		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(WeaponClass);
@@ -29,6 +30,7 @@ void ABaseCharacter::BeginPlay()
 		{
 			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 			Weapon->SetOwner(this);
+			Weapon->SetInstigator(this);
 			UE_LOG(LogTemp, Warning, TEXT("Created weapon from %s"), *Weapon->GetName())
 		}
 	}
@@ -45,6 +47,14 @@ void ABaseCharacter::SetupCharacterMovement()
 	GetCharacterMovement()->AirControl = this->AirControl;
 	GetCharacterMovement()->MaxWalkSpeed *= Speed;
 	GetCharacterMovement()->JumpZVelocity = JumpHeight;
+}
+
+float ABaseCharacter::CalculatePlayerReach()
+{
+	FVector UpperArmLocation = GetMesh()->GetSocketLocation(TEXT("upperarm_r"));
+	FVector WeaponLocation = GetMesh()->GetSocketLocation(TEXT("WeaponSocket"));
+	float Reach = FVector::Dist(UpperArmLocation, WeaponLocation);
+	return Reach;
 }
 
 // Called every frame
