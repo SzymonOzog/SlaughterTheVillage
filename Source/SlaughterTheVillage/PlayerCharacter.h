@@ -30,7 +30,12 @@ public:
 private:
 	struct FActorSpawnParameters MissileSpawnParams;
 	void SetupMissileSpawnParams();
+	void PreviousMissile();
+	void NextMissile();
+
 	FTransform CalculateMissileSpawnTransform();
 	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<class ABaseMissile>> MissileClasses;
 	TSubclassOf<class ABaseMissile> MissileClass;
+	int32 MissileIndex;
 };
