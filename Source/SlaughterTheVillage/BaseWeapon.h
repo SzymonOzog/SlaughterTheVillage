@@ -27,8 +27,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		USceneComponent* Root;
 	UPROPERTY(EditDefaultsOnly)
-		float Damage;
-	UPROPERTY(EditDefaultsOnly)
+		float Damage = 30.0f;
 		float Range;
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Mesh;

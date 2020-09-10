@@ -2,6 +2,7 @@
 
 
 #include "BaseWeapon.h"
+#include "BaseCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
 // Sets default values for this component's properties
@@ -24,7 +25,8 @@ void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("%s BeginPlay"), *GetName());
-	Range = Mesh->CalcBounds(FTransform()).BoxExtent.Z;
+	//Box extent is multiplied by 2 because it gives distance to the center
+	Range = Mesh->CalcBounds(FTransform()).BoxExtent.Z * 2.0f;
 	UE_LOG(LogTemp, Warning, TEXT("%s range is %f"), *GetName(), Range);
 }
 
@@ -37,6 +39,18 @@ void ABaseWeapon::Tick(float DeltaTime)
 
 void ABaseWeapon::Attack()
 {
-
+	FVector StartLocation = GetOwner()->GetActorLocation();
+	FVector LookingDirection = GetOwner()->GetActorRotation().Vector();
+	float PlayerReach = Cast<ABaseCharacter>(GetOwner())->GetPlayerReach();
+	FVector EndLocation = StartLocation + LookingDirection * (Range + PlayerReach);
+	FHitResult HitResult;
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+	CollisionParams.AddIgnoredActor(GetOwner());
+	GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECollisionChannel::ECC_Pawn, CollisionParams);
+	if (ABaseCharacter* CharacterHit = Cast<ABaseCharacter>(HitResult.GetActor()))
+	{
+		CharacterHit->TakeDamage(Damage, FDamageEvent(), this->GetInstigatorController(), this);
+	}
 }
 
