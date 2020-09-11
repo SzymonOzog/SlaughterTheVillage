@@ -132,6 +132,11 @@ void ABaseCharacter::PushBack(FVector PushDirection)
 	GetCharacterMovement()->AddImpulse(PushDirection, true);
 }
 
+void ABaseCharacter::HitSpikes()
+{
+	SpikeHitTime = GetWorld()->GetTimeSeconds();
+}
+
 void ABaseCharacter::RotateToControllerYaw()
 {
 	FRotator playerRotation = GetActorRotation();

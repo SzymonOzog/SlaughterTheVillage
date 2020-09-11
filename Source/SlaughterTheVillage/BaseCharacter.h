@@ -39,7 +39,9 @@ public:
 	inline bool IsCharacterAttacking() { return bIsAttacking; }
 	
 	void PushBack(FVector PushDirection);
-
+	
+	void HitSpikes();
+	inline float GetSpikeHitTime() const { return SpikeHitTime; }
 private:
 	UPROPERTY(EditDefaultsOnly)
 	float AirControl = 0.5f;
@@ -51,6 +53,8 @@ private:
 	float CurrentHealth;
 
 	float PlayerReach;
+	
+	float SpikeHitTime;
 
 	bool bIsAttacking = false;
 

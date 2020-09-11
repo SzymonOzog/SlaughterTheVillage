@@ -31,7 +31,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		float ActivationAngleDegrees = 45.0f;
 	UPROPERTY(EditAnywhere)
-		float PushBackValue = 100.0f;
+		float PushBackValue = 50.0f;
+	UPROPERTY(EditAnywhere)
+		float TimeBetweenHits = 0.2f;
 	UFUNCTION()
 		virtual void OnSpikesHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
