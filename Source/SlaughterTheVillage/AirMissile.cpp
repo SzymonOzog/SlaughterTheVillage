@@ -5,8 +5,10 @@
 #include "EngineGlobals.h"
 #include "PushComponent.h"
 #include "BaseCharacter.h"
-#include "GameFramework/PawnMovementComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Controller.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 
 void AAirMissile::applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -15,16 +17,7 @@ void AAirMissile::applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVec
 		FVector EnemyLocation = OtherActor->GetActorLocation();
 		FVector PlayerLocation = SelfActor->GetActorLocation();
 		FVector MoveAmount = calculateMoveAmount(PlayerLocation, EnemyLocation);
-		UE_LOG(LogTemp, Warning, TEXT("MoveAmount is %s"), *MoveAmount.ToString())
-		UE_LOG(LogTemp, Warning, TEXT("Old velocity is %s"), *Character->GetMovementComponent()->Velocity.ToString())
-		//Velocity behaves different while airbourne so it needs to be scaled down
-		//to avoid launching player too far
-		if (Character->GetMovementComponent()->IsFalling())
-		{
-			MoveAmount /= AirbourneScaleDown; 
-		}
-		Character->GetMovementComponent()->Velocity += MoveAmount;
-		UE_LOG(LogTemp, Warning, TEXT("New velocity is %s"), *Character->GetMovementComponent()->Velocity.ToString())
+		Character->PushBack(MoveAmount);
 	}
 }
 

@@ -18,8 +18,6 @@ public:
 private:
 	FVector calculateMoveAmount(const FVector& playerLocation, const FVector& enemyLocation);
 	UPROPERTY(EditDefaultsOnly)
-		float PushStrength = 10000.0f;
-	UPROPERTY(EditDefaultsOnly)
-		float AirbourneScaleDown = 100.0f;
+		float PushStrength = 100.0f;
 
 };

@@ -37,6 +37,9 @@ public:
 
 	virtual void Attack();
 	inline bool IsCharacterAttacking() { return bIsAttacking; }
+	
+	void PushBack(FVector PushDirection);
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 	float AirControl = 0.5f;

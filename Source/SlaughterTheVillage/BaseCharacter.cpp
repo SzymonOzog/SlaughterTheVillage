@@ -123,6 +123,15 @@ void ABaseCharacter::Attack()
 
 }
 
+void ABaseCharacter::PushBack(FVector PushDirection)
+{
+	PushDirection *= GetMesh()->GetMass();
+	//Lift the character to eliminate friction
+	PushDirection.Z = 100.0f;
+	GetController()->StopMovement();
+	GetCharacterMovement()->AddImpulse(PushDirection, true);
+}
+
 void ABaseCharacter::RotateToControllerYaw()
 {
 	FRotator playerRotation = GetActorRotation();
