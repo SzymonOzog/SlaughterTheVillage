@@ -24,6 +24,7 @@ void ASlaughterTheVillageGameModeBase::BeginPlay()
 			GetWorldTimerManager().SetTimer(InputTimer, this, &ASlaughterTheVillageGameModeBase::WaitForInput, 0.5f, true, 0.5f);
 		}
 	}
+
 }
 
 void ASlaughterTheVillageGameModeBase::WaitForInput()
@@ -35,10 +36,24 @@ void ASlaughterTheVillageGameModeBase::WaitForInput()
 		UGameplayStatics::GetPlayerPawn(this, 0)->EnableInput(PlayerController);
 
 		GetWorldTimerManager().ClearTimer(InputTimer);
+
+		CreateHUD();
 	}
 }
 
 void ASlaughterTheVillageGameModeBase::StartGame()
 {
 	bPlayerStartedGame = true;
+}
+
+void ASlaughterTheVillageGameModeBase::CreateHUD()
+{
+	if (HUD_Class)
+	{
+		UUserWidget* HUD = CreateWidget<UUserWidget>(GetWorld(), HUD_Class);
+		if (HUD)
+		{
+			HUD->AddToViewport();
+		}
+	}
 }

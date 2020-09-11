@@ -17,6 +17,8 @@ protected:
 	virtual void BeginPlay() override;
 private:
 	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> HUD_Class;
+	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> StartMessageClass;
 	UPROPERTY()
 		UUserWidget* StartMessage;
@@ -26,4 +28,5 @@ private:
 
 	void WaitForInput();
 	void StartGame();
+	void CreateHUD();
 };
