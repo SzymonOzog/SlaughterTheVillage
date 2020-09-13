@@ -48,7 +48,7 @@ void ABaseMissile::OnMissileHit(AActor* SelfActor, AActor* OtherActor, FVector N
 	applySpecialEffect(SelfActor, OtherActor, NormalImpulse, Hit);
 	if (ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
 	{
-		Character->TakeDamage(1.0f, FDamageEvent(), GetInstigator()->GetController(), GetOwner());
+		Character->TakeDamage(Damage, FDamageEvent(), GetInstigator()->GetController(), GetOwner());
 	}
 	Destroy();
 }
