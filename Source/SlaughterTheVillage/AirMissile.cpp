@@ -14,10 +14,13 @@ void AAirMissile::applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVec
 {
 	if (ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
 	{
-		FVector EnemyLocation = OtherActor->GetActorLocation();
-		FVector PlayerLocation = SelfActor->GetActorLocation();
-		FVector MoveAmount = calculateMoveAmount(PlayerLocation, EnemyLocation);
-		Character->PushBack(MoveAmount);
+		if (!Character->IsPlayerDead())
+		{
+			FVector EnemyLocation = OtherActor->GetActorLocation();
+			FVector PlayerLocation = SelfActor->GetActorLocation();
+			FVector MoveAmount = calculateMoveAmount(PlayerLocation, EnemyLocation);
+			Character->PushBack(MoveAmount);
+		}
 	}
 }
 
