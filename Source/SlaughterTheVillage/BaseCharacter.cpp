@@ -7,6 +7,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "SlaughterTheVillageGameModeBase.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -60,6 +61,8 @@ float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 		if (IsPlayerDead())
 		{
 			HandleDeath();
+			//Notify the game mode that this has died
+			Cast<ASlaughterTheVillageGameModeBase>(GetWorld()->GetAuthGameMode())->CharacterKilled(this);
 		}
 	return DamageAmount;
 }

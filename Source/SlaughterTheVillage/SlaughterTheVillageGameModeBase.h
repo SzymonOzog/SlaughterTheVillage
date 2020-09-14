@@ -13,11 +13,17 @@ UCLASS()
 class SLAUGHTERTHEVILLAGE_API ASlaughterTheVillageGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
+	void CharacterKilled(class ABaseCharacter* CharacterKilled);
 protected:
 	virtual void BeginPlay() override;
 private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> HUD_Class;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> LoseMessageClass;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> WinMessageClass;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> StartMessageClass;
 	UPROPERTY()
@@ -29,4 +35,5 @@ private:
 	void WaitForInput();
 	void StartGame();
 	void CreateHUD();
+	void EndGame(bool bPlayerWon);
 };

@@ -6,6 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "TimerManager.h"
 #include "Components/InputComponent.h"
+#include "PlayerCharacter.h"
+#include "Villager.h"
+#include "EngineUtils.h"
 
 void ASlaughterTheVillageGameModeBase::BeginPlay()
 {
@@ -25,6 +28,23 @@ void ASlaughterTheVillageGameModeBase::BeginPlay()
 		}
 	}
 
+}
+void ASlaughterTheVillageGameModeBase::CharacterKilled(ABaseCharacter* CharacterKilled)
+{
+	if (Cast<APlayerCharacter>(CharacterKilled))
+	{
+		EndGame(false);
+		return;
+	}
+	for (TActorIterator<AVillager> It(GetWorld()); It; ++It)
+	{
+		if (!It->IsPlayerDead())
+		{
+			return;
+		}
+	}
+	//No Villagers left, player has won
+	EndGame(true);
 }
 
 void ASlaughterTheVillageGameModeBase::WaitForInput()
@@ -54,6 +74,32 @@ void ASlaughterTheVillageGameModeBase::CreateHUD()
 		if (HUD)
 		{
 			HUD->AddToViewport();
+		}
+	}
+}
+
+void ASlaughterTheVillageGameModeBase::EndGame(bool bPlayerWon)
+{
+	if (bPlayerWon)
+	{
+		if (WinMessageClass)
+		{
+			UUserWidget* WinMessage = CreateWidget<UUserWidget>(GetWorld(), WinMessageClass);
+			if (WinMessage)
+			{
+				WinMessage->AddToViewport();
+			}
+		}
+	}
+	else
+	{
+		if (LoseMessageClass)
+		{
+			UUserWidget* LoseMessage = CreateWidget<UUserWidget>(GetWorld(), LoseMessageClass);
+			if (LoseMessage)
+			{
+				LoseMessage->AddToViewport();
+			}
 		}
 	}
 }
