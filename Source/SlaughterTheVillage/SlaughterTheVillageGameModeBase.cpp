@@ -70,7 +70,7 @@ void ASlaughterTheVillageGameModeBase::CreateHUD()
 {
 	if (HUD_Class)
 	{
-		UUserWidget* HUD = CreateWidget<UUserWidget>(GetWorld(), HUD_Class);
+		HUD = CreateWidget<UUserWidget>(GetWorld(), HUD_Class);
 		if (HUD)
 		{
 			HUD->AddToViewport();
@@ -80,6 +80,10 @@ void ASlaughterTheVillageGameModeBase::CreateHUD()
 
 void ASlaughterTheVillageGameModeBase::EndGame(bool bPlayerWon)
 {
+	if (HUD)
+	{
+		HUD->RemoveFromViewport();
+	}
 	if (bPlayerWon)
 	{
 		if (WinMessageClass)

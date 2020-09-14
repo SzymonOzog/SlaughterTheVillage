@@ -20,6 +20,8 @@ protected:
 private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> HUD_Class;
+	UPROPERTY()
+		UUserWidget* HUD;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> LoseMessageClass;
 	UPROPERTY(EditAnywhere)
@@ -28,6 +30,7 @@ private:
 		TSubclassOf<UUserWidget> StartMessageClass;
 	UPROPERTY()
 		UUserWidget* StartMessage;
+
 
 	bool bPlayerStartedGame = false;
 	struct FTimerHandle InputTimer;
