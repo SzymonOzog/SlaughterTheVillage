@@ -19,6 +19,7 @@ ABaseMissile::ABaseMissile()
 	MissileMovement->InitialSpeed = MissileSpeed;
 	MissileMovement->MaxSpeed = MissileSpeed;
 	MissileMovement->ProjectileGravityScale = GravityScale;
+	MissileMovement->bRotationFollowsVelocity = true;
 
 	OnActorHit.AddDynamic(this, &ABaseMissile::OnMissileHit);
 }
@@ -38,6 +39,7 @@ void ABaseMissile::Tick(float DeltaTime)
 	if (OwningPlayer && OwningPlayer->IsCharacterAttacking())
 	{
 		FVector LookingDirection = OwningPlayer->GetControlRotation().Vector();
+		//OwningPlayers looking direction is in global space, we need to translate it to Missiles local space
 		FVector TranslatedLookingDirection = UKismetMathLibrary::InverseTransformDirection(GetTransform(), LookingDirection);
 		MissileMovement->SetVelocityInLocalSpace(TranslatedLookingDirection * MissileSpeed);
 	}

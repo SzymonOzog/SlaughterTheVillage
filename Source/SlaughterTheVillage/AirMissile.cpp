@@ -26,8 +26,13 @@ void AAirMissile::applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVec
 
 FVector AAirMissile::calculateMoveAmount(const FVector& PlayerLocation, const FVector& EnemyLocation)
 {
-	FVector MoveAmount = EnemyLocation - PlayerLocation;
-	MoveAmount.Normalize();
+	FVector MissileToPlayer = EnemyLocation - PlayerLocation;
+	MissileToPlayer.Normalize();
+	FVector MissileRotation = GetActorRotation().Vector();
+	//Added missile to plater vector with missile rotation vector so the 
+	//Push Back direction would depend on the location it hit the player
+	//and the direction the missile was going(Rotation follows Velocity is true)
+	FVector MoveAmount = MissileToPlayer + MissileRotation;
 	MoveAmount *= PushStrength;
 	return MoveAmount;
 }
