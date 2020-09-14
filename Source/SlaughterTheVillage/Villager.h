@@ -24,9 +24,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Attack() override;
+	inline float GetVisionRange() { return VisionRange; }
 private:
 	UPROPERTY(EditDefaultsOnly)
 		TArray<TSubclassOf<class ABaseWeapon>> WeaponClasses;
 	UPROPERTY()
 		class ABaseWeapon* Weapon = nullptr;
+	UPROPERTY(EditAnywhere)
+		float VisionRange = 1000.0f;
 };

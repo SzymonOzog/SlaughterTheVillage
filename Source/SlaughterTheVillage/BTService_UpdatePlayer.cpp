@@ -5,16 +5,25 @@
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "Villager.h"
 UBTService_UpdatePlayer::UBTService_UpdatePlayer()
 {
-	NodeName = TEXT("Update Player");
+	NodeName = TEXT("Update Player if seen and in range");
 }
 void UBTService_UpdatePlayer::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	if(OwnerComp.GetAIOwner()->LineOfSightTo(PlayerPawn))
+	if (OwnerComp.GetAIOwner()->LineOfSightTo(PlayerPawn))
 	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsObject(GetSelectedBlackboardKey(), PlayerPawn);
+		if (AVillager* ControlledVillager = Cast<AVillager>(OwnerComp.GetAIOwner()->GetCharacter()))
+		{
+			FVector PlayerLocation = PlayerPawn->GetActorLocation();
+			FVector VillagerLocation = ControlledVillager->GetActorLocation();
+			if (ControlledVillager->GetVisionRange() >= FVector::Distance(PlayerLocation, VillagerLocation))
+			{
+				OwnerComp.GetBlackboardComponent()->SetValueAsObject(GetSelectedBlackboardKey(), PlayerPawn);
+			}
+		}
 	}
 	else
 	{
