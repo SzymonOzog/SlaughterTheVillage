@@ -38,4 +38,9 @@ private:
 	TArray<TSubclassOf<class ABaseMissile>> MissileClasses;
 	TSubclassOf<class ABaseMissile> MissileClass;
 	int32 MissileIndex;
+
+
+	UPROPERTY(EditAnywhere)
+	float MissileCooldown = 0.4f;
+	float MissileLastCast = 0.0f;
 };
