@@ -19,7 +19,6 @@ void AExplosion::BeginPlay()
 	Super::BeginPlay();
 	OnActorBeginOverlap.AddDynamic(this, &AExplosion::OnExplosionOverlap);
 	SetActorScale3D(StartScale);
-	
 }
 
 // Called every frame

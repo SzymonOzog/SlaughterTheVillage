@@ -31,29 +31,28 @@ void ASpikes::Tick(float DeltaTime)
 
 void ASpikes::OnSpikesHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Spikes OnHit"))
-		if (ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
+	if (ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
+	{
+		if (GetWorld()->GetTimeSeconds() - Character->GetSpikeHitTime() >= TimeBetweenHits)
 		{
-			if (GetWorld()->GetTimeSeconds() - Character->GetSpikeHitTime() >= TimeBetweenHits)
+			FVector CharacterPositionInSpikesSpace = Character->GetActorLocation() - SelfActor->GetActorLocation();
+			FVector SpikesRotationVector = GetActorRotation().Vector();
+			CharacterPositionInSpikesSpace.Normalize();
+			//The dot product of 2 unit vectors is equal to the cosine of the angle between those 2 vectors
+			//so this is just checking if the angle at witch the player has hit the spikes is the same as 
+			//the activation angle. This is to avoid damaging the player if he hit the spikes from the back/side
+			float DotProduct = FVector::DotProduct(SpikesRotationVector, CharacterPositionInSpikesSpace);
+			if (DotProduct >= FMath::Cos(ActivationAngleDegrees))
 			{
-				FVector CharacterPositionInSpikesSpace = Character->GetActorLocation() - SelfActor->GetActorLocation();
-				FVector SpikesRotationVector = GetActorRotation().Vector();
-				CharacterPositionInSpikesSpace.Normalize();
-				//The dot product of 2 unit vectors is equal to the cosine of the angle between those 2 vectors
-				//so this is just checking if the angle at witch the player has hit the spikes is the same as 
-				//the activation angle. This is to avoid damaging the player if he hit the spikes from the back/side
-				float DotProduct = FVector::DotProduct(SpikesRotationVector, CharacterPositionInSpikesSpace);
-				if (DotProduct >= FMath::Cos(ActivationAngleDegrees))
+				Character->HitSpikes();
+				Character->TakeDamage(Damage, FDamageEvent(), nullptr, this);
+				//Push the player back 
+				if (!Character->IsPlayerDead())
 				{
-					Character->HitSpikes();
-					Character->TakeDamage(Damage, FDamageEvent(), nullptr, this);
-					//Push the player back to avoid triggering OnHit again
-					if (!Character->IsPlayerDead())
-					{
-						Character->PushBack(CharacterPositionInSpikesSpace * PushBackValue);
-					}
+					Character->PushBack(CharacterPositionInSpikesSpace * PushBackValue);
 				}
 			}
 		}
+	}
 }
 

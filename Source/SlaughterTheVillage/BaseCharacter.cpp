@@ -57,13 +57,12 @@ float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 {
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	CurrentHealth = FMath::Clamp(CurrentHealth - DamageApplied, 0.0f, MaxHealth);
-	UE_LOG(LogTemp, Warning, TEXT("%s's health is %f"), *GetName(), CurrentHealth)
-		if (IsPlayerDead())
-		{
-			HandleDeath();
-			//Notify the game mode that this has died
-			Cast<ASlaughterTheVillageGameModeBase>(GetWorld()->GetAuthGameMode())->CharacterKilled(this);
-		}
+	if (IsPlayerDead())
+	{
+		HandleDeath();
+		//Notify the game mode that this has died
+		Cast<ASlaughterTheVillageGameModeBase>(GetWorld()->GetAuthGameMode())->CharacterKilled(this);
+	}
 	return DamageAmount;
 }
 
@@ -72,6 +71,7 @@ void ABaseCharacter::HandleDeath()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DetachFromControllerPendingDestroy();
+	//Turn on meshes physics to make it fall on the ground
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionProfileName(TEXT("BlockAll"));
 }
@@ -122,8 +122,6 @@ void ABaseCharacter::Attack()
 	//we are rotating to prevent attacking with our back
 	RotateToControllerYaw();
 	bIsAttacking = true;
-	UE_LOG(LogTemp, Warning, TEXT("Atttacked"))
-
 }
 
 void ABaseCharacter::PushBack(FVector PushDirection)

@@ -30,13 +30,12 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::Attack()
 {
-	Super::Attack();
+	Super::Attack(); 
 	if (GetWorld()->GetTimeSeconds() - MissileLastCast < MissileCooldown)
 	{
 		return;
 	}
 	MissileLastCast = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("Atttacked in player class"))
 	MissileClass = MissileClasses[MissileIndex];
 	if (MissileClass)
 	{
