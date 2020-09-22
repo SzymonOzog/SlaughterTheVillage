@@ -32,6 +32,7 @@ private:
 	void SetupMissileSpawnParams();
 	void PreviousMissile();
 	void NextMissile();
+	void Dash();
 
 	FTransform CalculateMissileSpawnTransform();
 	UPROPERTY(EditAnywhere)
@@ -39,7 +40,8 @@ private:
 	TSubclassOf<class ABaseMissile> MissileClass;
 	int32 MissileIndex;
 
-
+	UPROPERTY(EditDefaultsOnly)
+	float DashStrength = 300.0f;
 	UPROPERTY(EditAnywhere)
 	float MissileCooldown = 0.4f;
 	float MissileLastCast = 0.0f;

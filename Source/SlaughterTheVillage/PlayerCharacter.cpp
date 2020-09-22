@@ -26,6 +26,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction(TEXT("NextMissile"), IE_Pressed, this, &APlayerCharacter::NextMissile);
 	PlayerInputComponent->BindAction(TEXT("PreviousMissile"), IE_Pressed, this, &APlayerCharacter::PreviousMissile);
+	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::Dash);
 }
 
 void APlayerCharacter::Attack()
@@ -67,6 +68,11 @@ void APlayerCharacter::NextMissile()
 	{
 		MissileIndex = 0;
 	}
+}
+
+void APlayerCharacter::Dash()
+{
+	PushBack(GetControlRotation().Vector() * DashStrength);
 }
 
 FTransform APlayerCharacter::CalculateMissileSpawnTransform()
