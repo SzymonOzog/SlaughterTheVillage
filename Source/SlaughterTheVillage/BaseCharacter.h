@@ -38,8 +38,9 @@ public:
 	virtual void Attack();
 	inline bool IsCharacterAttacking() { return bIsAttacking; }
 	
-	void PushBack(FVector PushDirection);
-	
+	inline void PushBack(FVector PushDirection) { PushBack(PushDirection, PushBackDuration); }
+	void PushBack(FVector PushDirection, float Duration);
+	void StopPushBack();
 	void HitSpikes();
 	inline float GetSpikeHitTime() const { return SpikeHitTime; }
 private:
@@ -51,10 +52,14 @@ private:
 	float MaxHealth = 100.0f;
 	UPROPERTY(VisibleAnywhere)
 	float CurrentHealth;
+	UPROPERTY(EditDefaultsOnly)
+	float PushBackDuration = 0.2f;
 
 	float PlayerReach;
 	
 	float SpikeHitTime;
+
+	float FrictionFactor;
 
 	bool bIsAttacking = false;
 

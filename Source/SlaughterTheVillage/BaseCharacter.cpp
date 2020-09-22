@@ -8,6 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "SlaughterTheVillageGameModeBase.h"
+#include "TimerManager.h"
+#include "AIController_Villager.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -23,6 +25,7 @@ void ABaseCharacter::BeginPlay()
 	CurrentHealth = MaxHealth;
 	SetupCharacterMovement();
 	PlayerReach = CalculatePlayerReach();
+	FrictionFactor = GetCharacterMovement()->BrakingFrictionFactor;
 }
 
 void ABaseCharacter::SetupCharacterMovement()
@@ -124,13 +127,31 @@ void ABaseCharacter::Attack()
 	bIsAttacking = true;
 }
 
-void ABaseCharacter::PushBack(FVector PushDirection)
+void ABaseCharacter::PushBack(FVector PushDirection, float Duration)
 {
 	PushDirection *= GetMesh()->GetMass();
-	//Lift the character to eliminate friction
-	PushDirection.Z = 100.0f;
-	GetController()->StopMovement();
+	UE_LOG(LogTemp, Warning, TEXT("pushing in %s"), *PushDirection.ToString())
+	GetCharacterMovement()->BrakingFrictionFactor = 0.0f;
+	if (AAIController_Villager* AIController = Cast<AAIController_Villager>(Controller))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CastSuccesful"))
+		AIController->StopExecutingBehaviour();
+		AIController->StopMovement();
+	}
+	GetCharacterMovement()->StopMovementImmediately();
 	GetCharacterMovement()->AddImpulse(PushDirection, true);
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer(Handle, this, &ABaseCharacter::StopPushBack, Duration, false);
+}
+
+void ABaseCharacter::StopPushBack()
+{
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->BrakingFrictionFactor = FrictionFactor;
+	if (AAIController_Villager* AIController = Cast<AAIController_Villager>(Controller))
+	{
+		AIController->StartExecutingBehaviour();
+	}
 }
 
 void ABaseCharacter::HitSpikes()
