@@ -13,6 +13,9 @@ UCLASS()
 class SLAUGHTERTHEVILLAGE_API AAIController_Villager : public AAIController
 {
 	GENERATED_BODY()
+public:
+    void StopExecutingBehaviour();
+    void StartExecutingBehaviour();
 protected:
     virtual void BeginPlay() override;
 private:

@@ -3,6 +3,16 @@
 
 #include "AIController_Villager.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BrainComponent.h"
+void AAIController_Villager::StopExecutingBehaviour()
+{
+	BrainComponent->PauseLogic("");
+}
+void AAIController_Villager::StartExecutingBehaviour()
+{
+	BrainComponent->ResumeLogic("");
+}
 void AAIController_Villager::BeginPlay()
 {
 	Super::BeginPlay();
@@ -10,5 +20,4 @@ void AAIController_Villager::BeginPlay()
 	{
 		RunBehaviorTree(AIBehavior);
 	}
-
 }
