@@ -90,6 +90,11 @@ void APlayerCharacter::NextMissile()
 
 void APlayerCharacter::Dash()
 {
+	if (GetWorld()->GetTimeSeconds() - DashLastCast < DashCooldown)
+	{
+		return;
+	}
+	DashLastCast = GetWorld()->GetTimeSeconds();
 	PushBack(GetActorRotation().Vector() * DashStrength);
 }
 

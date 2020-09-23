@@ -48,6 +48,10 @@ private:
 	float MissileCooldown = 0.4f;
 	float MissileLastCast = 0.0f;
 
+	UPROPERTY(EditAnywhere)
+	float DashCooldown = 1.0f;
+	float DashLastCast = 0.0f;
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ADecalActor> SpellIndicatorClass;
 	UPROPERTY()
