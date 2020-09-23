@@ -4,6 +4,10 @@
 #include "PlayerCharacter.h"
 #include "BaseMissile.h"
 #include "Engine/World.h"
+#include "Engine/DecalActor.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "DrawDebugHelpers.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -18,6 +22,18 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (bIsAimingSpell && SpellIndicator)
+	{
+		FVector PlayerViewLocation;
+		FRotator PlayerViewRotation;
+		Controller->GetPlayerViewPoint(PlayerViewLocation, PlayerViewRotation);
+		FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * 5000.0f;
+		FHitResult Hit;
+		if (GetWorld()->LineTraceSingleByChannel(Hit, PlayerViewLocation, LineTraceEnd, ECollisionChannel::ECC_Visibility))
+		{
+			SpellIndicator->SetActorLocation(Hit.Location);
+		}
+	}
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -27,6 +43,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("NextMissile"), IE_Pressed, this, &APlayerCharacter::NextMissile);
 	PlayerInputComponent->BindAction(TEXT("PreviousMissile"), IE_Pressed, this, &APlayerCharacter::PreviousMissile);
 	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::Dash);
+	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Pressed, this, &APlayerCharacter::AimSpell);
+	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Released, this, &APlayerCharacter::CastSpell);
 }
 
 void APlayerCharacter::Attack()
@@ -73,6 +91,24 @@ void APlayerCharacter::NextMissile()
 void APlayerCharacter::Dash()
 {
 	PushBack(GetControlRotation().Vector() * DashStrength);
+}
+
+void APlayerCharacter::AimSpell()
+{
+	if (SpellIndicatorClass)
+	{
+		bIsAimingSpell = true;
+		SpellIndicator = GetWorld()->SpawnActor<ADecalActor>(SpellIndicatorClass, GetActorLocation(), FRotator());
+	}
+}
+
+void APlayerCharacter::CastSpell()
+{
+	bIsAimingSpell = false;
+	if (SpellIndicator)
+	{
+		SpellIndicator->Destroy();
+	}
 }
 
 FTransform APlayerCharacter::CalculateMissileSpawnTransform()

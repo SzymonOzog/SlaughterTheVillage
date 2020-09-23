@@ -33,6 +33,8 @@ private:
 	void PreviousMissile();
 	void NextMissile();
 	void Dash();
+	void AimSpell();
+	void CastSpell();
 
 	FTransform CalculateMissileSpawnTransform();
 	UPROPERTY(EditAnywhere)
@@ -45,4 +47,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MissileCooldown = 0.4f;
 	float MissileLastCast = 0.0f;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ADecalActor> SpellIndicatorClass;
+	UPROPERTY()
+	ADecalActor* SpellIndicator;
+	bool bIsAimingSpell = false;
 };
