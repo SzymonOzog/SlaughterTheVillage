@@ -33,6 +33,15 @@ void APlayerCharacter::Tick(float DeltaTime)
 		{
 			SpellIndicator->SetActorLocation(Hit.Location);
 		}
+		else// Line trace from the end to the ground and draw the Spell Indicator there
+		{
+			FVector LineTraceEndToGround = LineTraceEnd;
+			LineTraceEndToGround.Z -= 8000.0f;
+			if (GetWorld()->LineTraceSingleByChannel(Hit, LineTraceEnd, LineTraceEndToGround, ECollisionChannel::ECC_Visibility))
+			{
+				SpellIndicator->SetActorLocation(Hit.Location);				
+			}
+		}
 	}
 }
 
