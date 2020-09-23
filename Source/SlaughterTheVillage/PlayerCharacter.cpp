@@ -90,7 +90,7 @@ void APlayerCharacter::NextMissile()
 
 void APlayerCharacter::Dash()
 {
-	PushBack(GetControlRotation().Vector() * DashStrength);
+	PushBack(GetActorRotation().Vector() * DashStrength);
 }
 
 void APlayerCharacter::AimSpell()
