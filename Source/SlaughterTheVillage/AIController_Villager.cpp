@@ -12,6 +12,7 @@ void AAIController_Villager::StopExecutingBehaviour()
 void AAIController_Villager::StartExecutingBehaviour()
 {
 	BrainComponent->ResumeLogic("");
+	BrainComponent->RestartLogic();
 }
 void AAIController_Villager::BeginPlay()
 {
