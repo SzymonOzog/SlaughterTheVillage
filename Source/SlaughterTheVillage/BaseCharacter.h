@@ -36,6 +36,7 @@ public:
 	inline float GetPlayerReach() const { return PlayerReach; }
 
 	virtual void Attack();
+	void RotateToControllerYaw();
 	inline bool IsCharacterAttacking() { return bIsAttacking; }
 	
 	inline void PushBack(FVector PushDirection) { PushBack(PushDirection, PushBackDuration); }
@@ -66,7 +67,6 @@ private:
 	void SetupCharacterMovement();
 	float CalculatePlayerReach();
 	void HandleDeath();
-	void RotateToControllerYaw();
 
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);

@@ -24,6 +24,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (bIsAimingSpell && SpellIndicator)
 	{
+		RotateToControllerYaw();
 		RotateSpellIndicator(DeltaTime);
 		SetSpellIndicatorLocation();
 	}
