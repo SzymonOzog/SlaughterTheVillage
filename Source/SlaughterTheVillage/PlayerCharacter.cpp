@@ -24,25 +24,38 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (bIsAimingSpell && SpellIndicator)
 	{
-		FVector PlayerViewLocation;
-		FRotator PlayerViewRotation;
-		Controller->GetPlayerViewPoint(PlayerViewLocation, PlayerViewRotation);
-		FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * 5000.0f;
-		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, PlayerViewLocation, LineTraceEnd, ECollisionChannel::ECC_Visibility))
-		{
-			SpellIndicator->SetActorLocation(Hit.Location);
-		}
-		else// Line trace from the end to the ground and draw the Spell Indicator there
-		{
-			FVector LineTraceEndToGround = LineTraceEnd;
-			LineTraceEndToGround.Z -= 8000.0f;
-			if (GetWorld()->LineTraceSingleByChannel(Hit, LineTraceEnd, LineTraceEndToGround, ECollisionChannel::ECC_Visibility))
-			{
-				SpellIndicator->SetActorLocation(Hit.Location);				
-			}
-		}
+		RotateSpellIndicator(DeltaTime);
+		SetSpellIndicatorLocation();
 	}
+}
+
+void APlayerCharacter::RotateSpellIndicator(float DeltaTime)
+{
+	FRotator SpellIndicatorRotator = FRotator::ZeroRotator;
+	SpellIndicatorRotator.Roll = 100.0f * DeltaTime;
+	SpellIndicator->AddActorLocalRotation(SpellIndicatorRotator);
+}
+
+void APlayerCharacter::SetSpellIndicatorLocation()
+{
+	FVector PlayerViewLocation;
+	FRotator PlayerViewRotation;
+	Controller->GetPlayerViewPoint(PlayerViewLocation, PlayerViewRotation);
+	FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * 5000.0f;
+	FHitResult Hit;
+	if (GetWorld()->LineTraceSingleByChannel(Hit, PlayerViewLocation, LineTraceEnd, ECollisionChannel::ECC_Visibility))
+	{
+		SpellIndicator->SetActorLocation(Hit.Location);
+	}
+	else// Line trace from the end to the ground and draw the Spell Indicator there
+		{
+		FVector LineTraceEndToGround = LineTraceEnd;
+		LineTraceEndToGround.Z -= 8000.0f;
+		if (GetWorld()->LineTraceSingleByChannel(Hit, LineTraceEnd, LineTraceEndToGround, ECollisionChannel::ECC_Visibility))
+		{
+			SpellIndicator->SetActorLocation(Hit.Location);				
+		}
+		}
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

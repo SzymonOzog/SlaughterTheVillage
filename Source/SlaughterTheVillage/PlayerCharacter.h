@@ -27,7 +27,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void Attack() override;
-private:
+	private:
+	void RotateSpellIndicator(float DeltaTime);
+	void SetSpellIndicatorLocation();
 	struct FActorSpawnParameters MissileSpawnParams;
 	void SetupMissileSpawnParams();
 	void PreviousMissile();
@@ -35,7 +37,7 @@ private:
 	void Dash();
 	void AimSpell();
 	void CastSpell();
-
+		
 	FTransform CalculateMissileSpawnTransform();
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<class ABaseMissile>> MissileClasses;
