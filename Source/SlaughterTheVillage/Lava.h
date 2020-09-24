@@ -12,24 +12,20 @@ class SLAUGHTERTHEVILLAGE_API ALava : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ALava();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditAnywhere)
-		float DamagePerSecond = 30.0f;
+	float DamagePerSecond = 30.0f;
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* Root;
+	USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* Mesh = nullptr;
+	UStaticMeshComponent* Mesh = nullptr;
 	UFUNCTION()
-	virtual void OnLavaBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+    virtual void OnLavaBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
+protected:
+	virtual void BeginPlay() override;
+
 private:
 	struct FTimerHandle TimerHandle;
 	UFUNCTION()

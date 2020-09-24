@@ -13,11 +13,6 @@ void UPushComponent::SetDestination(FVector _Destination)
 	Destination = _Destination;
 }
 
-void UPushComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void UPushComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -26,4 +21,9 @@ void UPushComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	GetOwner()->SetActorLocation(NewLocation, false);
 	if (CurrentLocation == Destination)
 		DestroyComponent();
+}
+
+void UPushComponent::BeginPlay()
+{
+	Super::BeginPlay();
 }

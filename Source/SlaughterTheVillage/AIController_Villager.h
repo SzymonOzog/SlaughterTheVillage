@@ -14,8 +14,8 @@ class SLAUGHTERTHEVILLAGE_API AAIController_Villager : public AAIController
 {
 	GENERATED_BODY()
 public:
-    void StopExecutingBehaviour();
-    void StartExecutingBehaviour();
+    void StopExecutingBehaviour() const;
+    void StartExecutingBehaviour() const;
 protected:
     virtual void BeginPlay() override;
 private:

@@ -16,8 +16,9 @@ class SLAUGHTERTHEVILLAGE_API AAirMissile : public ABaseMissile
 public:
 	virtual void applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) override;
 private:
-	FVector calculateMoveAmount(const FVector& playerLocation, const FVector& enemyLocation);
 	UPROPERTY(EditDefaultsOnly)
-		float PushStrength = 100.0f;
+	float PushStrength = 100.0f;
+	FVector calculateMoveAmount(const FVector& playerLocation, const FVector& enemyLocation) const;
+
 
 };

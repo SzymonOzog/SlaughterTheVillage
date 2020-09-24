@@ -13,22 +13,19 @@ class SLAUGHTERTHEVILLAGE_API ABaseWeapon : public AActor
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	ABaseWeapon();
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void Attack();
+
+protected:
+	virtual void BeginPlay() override;
+	
+private:
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* Root;
+	USceneComponent* Root;
 	UPROPERTY(EditDefaultsOnly)
-		float Damage = 30.0f;
-		float Range;
+	float Damage = 30.0f;
+	float Range;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* Mesh;
+	UStaticMeshComponent* Mesh;
 };

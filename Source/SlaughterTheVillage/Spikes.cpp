@@ -4,7 +4,6 @@
 #include "Spikes.h"
 #include "BaseCharacter.h"
 #include "Components/StaticMeshComponent.h"
-// Sets default values
 ASpikes::ASpikes()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -13,17 +12,15 @@ ASpikes::ASpikes()
 	RootComponent = Root;
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->AttachTo(Root);
+	Mesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-// Called when the game starts or when spawned
 void ASpikes::BeginPlay()
 {
 	Super::BeginPlay();
 	OnActorHit.AddDynamic(this, &ASpikes::OnSpikesHit);
 }
 
-// Called every frame
 void ASpikes::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

@@ -35,8 +35,8 @@ private:
 	bool bPlayerStartedGame = false;
 	struct FTimerHandle InputTimer;
 
-	void WaitForInput();
+	void EndGame(bool bPlayerWon) const;
 	void StartGame();
+	void WaitForInput();
 	void CreateHUD();
-	void EndGame(bool bPlayerWon);
 };

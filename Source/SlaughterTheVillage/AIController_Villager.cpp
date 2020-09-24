@@ -5,11 +5,11 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BrainComponent.h"
-void AAIController_Villager::StopExecutingBehaviour()
+void AAIController_Villager::StopExecutingBehaviour() const
 {
 	BrainComponent->PauseLogic("");
 }
-void AAIController_Villager::StartExecutingBehaviour()
+void AAIController_Villager::StartExecutingBehaviour() const
 {
 	BrainComponent->ResumeLogic("");
 	BrainComponent->RestartLogic();

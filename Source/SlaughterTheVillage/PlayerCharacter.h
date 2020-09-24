@@ -15,51 +15,43 @@ class SLAUGHTERTHEVILLAGE_API APlayerCharacter : public ABaseCharacter
 	GENERATED_BODY()
 public:
 	APlayerCharacter();
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Attack() override;
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	virtual void Attack() override;
-	private:
-	void RotateSpellIndicator(float DeltaTime);
-	void SetSpellIndicatorLocation();
-	struct FActorSpawnParameters MissileSpawnParams;
+private:
+	void RotateSpellIndicator(float DeltaTime) const;
+	void SetSpellIndicatorLocation() const;
 	void SetupMissileSpawnParams();
+	FTransform CalculateMissileSpawnTransform() const;
 	void PreviousMissile();
 	void NextMissile();
 	void Dash();
 	void AimSpell();
 	void CastSpell();
-		
-	FTransform CalculateMissileSpawnTransform();
+	
+	struct FActorSpawnParameters MissileSpawnParams;
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<class ABaseMissile>> MissileClasses;
 	TSubclassOf<class ABaseMissile> MissileClass;
-	int32 MissileIndex;
-
-	UPROPERTY(EditDefaultsOnly)
-	float DashStrength = 300.0f;
+	float MissileSpawnDistance = 150.0f;
 	UPROPERTY(EditAnywhere)
 	float MissileCooldown = 0.4f;
 	float MissileLastCast = 0.0f;
-
+	int32 MissileIndex;
 	UPROPERTY(EditAnywhere)
 	float DashCooldown = 1.0f;
 	float DashLastCast = 0.0f;
-
+	UPROPERTY(EditDefaultsOnly)
+	float DashStrength = 300.0f;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ADecalActor> SpellIndicatorClass;
 	UPROPERTY()
 	ADecalActor* SpellIndicator;
 	bool bIsAimingSpell = false;
-
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABaseSpell> SpellClass;
 };

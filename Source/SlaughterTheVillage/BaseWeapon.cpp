@@ -5,33 +5,27 @@
 #include "BaseCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
-// Sets default values for this component's properties
+
 ABaseWeapon::ABaseWeapon()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	Mesh->AttachTo(Root);
+	Mesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-
-// Called when the game starts
 void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("%s BeginPlay"), *GetName());
 	//Box extent is multiplied by 2 because it gives distance to the center
 	Range = Mesh->CalcBounds(FTransform()).BoxExtent.Z * 2.0f;
-	UE_LOG(LogTemp, Warning, TEXT("%s range is %f"), *GetName(), Range);
 }
 
-
-// Called every frame
 void ABaseWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

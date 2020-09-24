@@ -30,34 +30,34 @@ void APlayerCharacter::Tick(float DeltaTime)
 	}
 }
 
-void APlayerCharacter::RotateSpellIndicator(float DeltaTime)
+void APlayerCharacter::RotateSpellIndicator(float DeltaTime) const
 {
 	FRotator SpellIndicatorRotator = FRotator::ZeroRotator;
 	SpellIndicatorRotator.Roll = 100.0f * DeltaTime;
 	SpellIndicator->AddActorLocalRotation(SpellIndicatorRotator);
 }
 
-void APlayerCharacter::SetSpellIndicatorLocation()
+void APlayerCharacter::SetSpellIndicatorLocation() const
 {
 	FVector PlayerViewLocation;
 	FRotator PlayerViewRotation;
 	Controller->GetPlayerViewPoint(PlayerViewLocation, PlayerViewRotation);
-	FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * 
-	SpellClass->GetDefaultObject<ABaseSpell>()->GetCastingRange();
+	float SpellRange = 	SpellClass->GetDefaultObject<ABaseSpell>()->GetCastingRange();
+	FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * SpellRange;
 	FHitResult Hit;
 	if (GetWorld()->LineTraceSingleByChannel(Hit, PlayerViewLocation, LineTraceEnd, ECollisionChannel::ECC_Visibility))
 	{
 		SpellIndicator->SetActorLocation(Hit.Location);
 	}
 	else// Line trace from the end to the ground and draw the Spell Indicator there
-		{
+	{
 		FVector LineTraceEndToGround = LineTraceEnd;
-		LineTraceEndToGround.Z -= 8000.0f;
+		LineTraceEndToGround.Z -= SpellRange;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, LineTraceEnd, LineTraceEndToGround, ECollisionChannel::ECC_Visibility))
 		{
 			SpellIndicator->SetActorLocation(Hit.Location);				
 		}
-		}
+	}
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -142,11 +142,11 @@ void APlayerCharacter::CastSpell()
 	 
 }
 
-FTransform APlayerCharacter::CalculateMissileSpawnTransform()
+FTransform APlayerCharacter::CalculateMissileSpawnTransform() const
 {
 	FTransform MissileSpawnTransform;
 	FRotator ControllerRotation = GetControlRotation();
-	MissileSpawnTransform.SetLocation(ControllerRotation.Vector() * 150.0f + GetActorLocation());
+	MissileSpawnTransform.SetLocation(ControllerRotation.Vector() * MissileSpawnDistance + GetActorLocation());
 	MissileSpawnTransform.SetRotation(ControllerRotation.Quaternion());
 	return MissileSpawnTransform;
 }

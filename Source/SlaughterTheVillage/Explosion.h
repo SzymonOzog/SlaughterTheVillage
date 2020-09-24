@@ -12,29 +12,23 @@ class SLAUGHTERTHEVILLAGE_API AExplosion : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AExplosion();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION()
-		virtual void OnExplosionOverlap(AActor* OverlappedActor, AActor* OtherActor);
+       virtual void OnExplosionOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
+protected:
+	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		UStaticMeshComponent* Mesh;
+	UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere)
-		FVector StartScale = { 0.2f, 0.2f, 0.2f };
+	FVector StartScale = { 0.2f, 0.2f, 0.2f };
 	UPROPERTY(EditAnywhere)
-		FVector EndScale = { 5.0f, 5.0f, 5.0f };
+	FVector EndScale = { 5.0f, 5.0f, 5.0f };
 	UPROPERTY(EditAnywhere)
-		float GrowSpeed = 10.0f;
+	float GrowSpeed = 10.0f;
 	UPROPERTY(EditAnywhere)
-		float Damage = 10.0f;
+	float Damage = 10.0f;
 };

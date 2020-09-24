@@ -15,5 +15,5 @@ class SLAUGHTERTHEVILLAGE_API AFireMissile : public ABaseMissile
 	GENERATED_BODY()
 	virtual void applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) override;
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class AExplosion> ExplosionClass;
+	TSubclassOf<class AExplosion> ExplosionClass;
 };

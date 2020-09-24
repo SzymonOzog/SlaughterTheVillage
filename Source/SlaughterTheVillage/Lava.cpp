@@ -6,19 +6,17 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Components/StaticMeshComponent.h"
-// Sets default values
 ALava::ALava()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->AttachTo(Root);
+	Mesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-// Called when the game starts or when spawned
 void ALava::BeginPlay()
 {
 	Super::BeginPlay();
@@ -26,7 +24,6 @@ void ALava::BeginPlay()
 	
 }
 
-// Called every frame
 void ALava::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -35,13 +32,11 @@ void ALava::Tick(float DeltaTime)
 
 void ALava::OnLavaBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Actor overlapped lava"))
 	if (ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
 	{
 		FTimerDelegate TimerDelegate;
 		TimerDelegate.BindUFunction(this, FName("DealLavaDamage"), Character);
 		GetWorldTimerManager().SetTimer(TimerHandle, TimerDelegate, 1.0f, true, 1.0f);
-		UE_LOG(LogTemp, Warning, TEXT("TimerSet"))	
 	}
 
 }
@@ -59,6 +54,5 @@ void ALava::DealLavaDamage(ABaseCharacter* Character)
 		}
 	}
 	GetWorldTimerManager().ClearTimer(TimerHandle);
-	UE_LOG(LogTemp, Warning, TEXT("Timer Cleared"))
 }
 

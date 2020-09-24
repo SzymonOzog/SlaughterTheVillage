@@ -12,17 +12,16 @@ class SLAUGHTERTHEVILLAGE_API AExplosiveBarrel : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AExplosiveBarrel();
 	UFUNCTION()
-		virtual void OnBarrelOverlap(AActor* OverlappedActor, AActor* OtherActor);
+	virtual void OnBarrelOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 private:
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class AExplosion> ExplosionClass;
+	TSubclassOf<class AExplosion> ExplosionClass;
 	UPROPERTY(EditDefaultsOnly)
-		UStaticMeshComponent* Mesh;
+	UStaticMeshComponent* Mesh;
 };

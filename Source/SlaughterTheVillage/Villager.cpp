@@ -7,22 +7,6 @@ AVillager::AVillager()
 {
 
 }
-void AVillager::BeginPlay()
-{
-	Super::BeginPlay();
-	TSubclassOf<ABaseWeapon> WeaponClass = WeaponClasses[FMath::RandRange(0, WeaponClasses.Num() - 1)];
-	if (WeaponClass)
-	{
-		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(WeaponClass);
-		if (Weapon)
-		{
-			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-			Weapon->SetOwner(this);
-			Weapon->SetInstigator(this);
-			UE_LOG(LogTemp, Warning, TEXT("Created weapon from %s"), *Weapon->GetName())
-		}
-	}
-}
 
 void AVillager::Tick(float DeltaTime)
 {
@@ -35,6 +19,21 @@ void AVillager::Attack()
 	if (Weapon)
 	{
 		Weapon->Attack();
-		UE_LOG(LogTemp, Warning, TEXT("Atttacked with %s"), *Weapon->GetName())
+	}
+}
+
+void AVillager::BeginPlay()
+{
+	Super::BeginPlay();
+	TSubclassOf<ABaseWeapon> WeaponClass = WeaponClasses[FMath::RandRange(0, WeaponClasses.Num() - 1)];
+	if (WeaponClass)
+	{
+		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(WeaponClass);
+		if (Weapon)
+		{
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+			Weapon->SetOwner(this);
+			Weapon->SetInstigator(this);
+		}
 	}
 }

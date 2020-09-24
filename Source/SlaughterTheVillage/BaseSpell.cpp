@@ -13,19 +13,15 @@ ABaseSpell::ABaseSpell()
 	RootComponent = Root;
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->AttachToComponent(Root, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	Mesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-
-// Called when the game starts or when spawned
 void ABaseSpell::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-
-// Called every frame
 void ABaseSpell::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

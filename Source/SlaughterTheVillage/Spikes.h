@@ -12,29 +12,26 @@ class SLAUGHTERTHEVILLAGE_API ASpikes : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASpikes();
+	virtual void Tick(float DeltaTime) override;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+private:	
+	UPROPERTY(EditAnywhere)
+	float Damage = 999.0f;
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* Root;
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* Mesh = nullptr;
+	UPROPERTY(EditAnywhere)
+	float ActivationAngleDegrees = 45.0f;
+	UPROPERTY(EditAnywhere)
+	float PushBackValue = 50.0f;
+	UPROPERTY(EditAnywhere)
+	float TimeBetweenHits = 0.2f;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	UPROPERTY(EditAnywhere)
-		float Damage = 999.0f;
-	UPROPERTY(VisibleAnywhere)
-		USceneComponent* Root;
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* Mesh = nullptr;
-	UPROPERTY(EditAnywhere)
-		float ActivationAngleDegrees = 45.0f;
-	UPROPERTY(EditAnywhere)
-		float PushBackValue = 50.0f;
-	UPROPERTY(EditAnywhere)
-		float TimeBetweenHits = 0.2f;
 	UFUNCTION()
-		virtual void OnSpikesHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
-
+    virtual void OnSpikesHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };

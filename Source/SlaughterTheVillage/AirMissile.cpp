@@ -24,7 +24,7 @@ void AAirMissile::applySpecialEffect(AActor* SelfActor, AActor* OtherActor, FVec
 	}
 }
 
-FVector AAirMissile::calculateMoveAmount(const FVector& PlayerLocation, const FVector& EnemyLocation)
+FVector AAirMissile::calculateMoveAmount(const FVector& PlayerLocation, const FVector& EnemyLocation) const
 {
 	FVector MissileToPlayer = EnemyLocation - PlayerLocation;
 	MissileToPlayer.Normalize();

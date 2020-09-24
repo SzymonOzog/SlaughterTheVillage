@@ -41,7 +41,7 @@ void ABaseCharacter::SetupCharacterMovement()
 	GetCharacterMovement()->JumpZVelocity = JumpHeight;
 }
 
-float ABaseCharacter::CalculatePlayerReach()
+float ABaseCharacter::CalculatePlayerReach() const
 {
 	FVector UpperArmLocation = GetMesh()->GetSocketLocation(TEXT("upperarm_r"));
 	FVector WeaponLocation = GetMesh()->GetSocketLocation(TEXT("WeaponSocket"));
@@ -127,38 +127,6 @@ void ABaseCharacter::Attack()
 	bIsAttacking = true;
 }
 
-void ABaseCharacter::PushBack(FVector PushDirection, float Duration)
-{
-	PushDirection *= GetMesh()->GetMass();
-	UE_LOG(LogTemp, Warning, TEXT("pushing in %s"), *PushDirection.ToString())
-	GetCharacterMovement()->BrakingFrictionFactor = 0.0f;
-	if (AAIController_Villager* AIController = Cast<AAIController_Villager>(Controller))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("CastSuccesful"))
-		AIController->StopExecutingBehaviour();
-		AIController->StopMovement();
-	}
-	GetCharacterMovement()->StopMovementImmediately();
-	GetCharacterMovement()->AddImpulse(PushDirection, true);
-	FTimerHandle Handle;
-	GetWorldTimerManager().SetTimer(Handle, this, &ABaseCharacter::StopPushBack, Duration, false);
-}
-
-void ABaseCharacter::StopPushBack()
-{
-	GetCharacterMovement()->StopMovementImmediately();
-	GetCharacterMovement()->BrakingFrictionFactor = FrictionFactor;
-	if (AAIController_Villager* AIController = Cast<AAIController_Villager>(Controller))
-	{
-		AIController->StartExecutingBehaviour();
-	}
-}
-
-void ABaseCharacter::HitSpikes()
-{
-	SpikeHitTime = GetWorld()->GetTimeSeconds();
-}
-
 void ABaseCharacter::RotateToControllerYaw()
 {
 	FRotator playerRotation = GetActorRotation();
@@ -172,3 +140,31 @@ void ABaseCharacter::StopAttacking()
 	bIsAttacking = false;
 }
 
+void ABaseCharacter::PushBack(FVector PushDirection, float Duration)
+{
+	PushDirection *= GetMesh()->GetMass();
+	GetCharacterMovement()->BrakingFrictionFactor = 0.0f;
+	if (AAIController_Villager* AIController = Cast<AAIController_Villager>(Controller))
+	{
+		AIController->StopExecutingBehaviour();
+	}
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->AddImpulse(PushDirection, true);
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer(Handle, this, &ABaseCharacter::StopPushBack, Duration, false);
+}
+
+void ABaseCharacter::StopPushBack() const
+{
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->BrakingFrictionFactor = FrictionFactor;
+	if (AAIController_Villager* AIController = Cast<AAIController_Villager>(Controller))
+	{
+		AIController->StartExecutingBehaviour();
+	}
+}
+
+void ABaseCharacter::HitSpikes()
+{
+	SpikeHitTime = GetWorld()->GetTimeSeconds();
+}
