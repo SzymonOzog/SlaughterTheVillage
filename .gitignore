@@ -72,3 +72,11 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+.idea/.idea.SlaughterTheVillage/.idea/indexLayout.xml
+.idea/.idea.SlaughterTheVillage/.idea/contentModel.xml
+.idea/.idea.SlaughterTheVillage/.idea/encodings.xml
+.idea/.idea.SlaughterTheVillage/.idea/modules.xml
+.idea/.idea.SlaughterTheVillage/.idea/projectSettingsUpdater.xml
+.idea/.idea.SlaughterTheVillage/.idea/vcs.xml
+.idea/.idea.SlaughterTheVillage/.idea/workspace.xml
+.idea/.idea.SlaughterTheVillage/riderModule.iml
