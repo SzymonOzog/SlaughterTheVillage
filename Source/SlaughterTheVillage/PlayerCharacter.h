@@ -59,4 +59,7 @@ public:
 	UPROPERTY()
 	ADecalActor* SpellIndicator;
 	bool bIsAimingSpell = false;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABaseSpell> SpellClass;
 };

@@ -5,9 +5,9 @@
 #include "BaseMissile.h"
 #include "Engine/World.h"
 #include "Engine/DecalActor.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
-#include "DrawDebugHelpers.h"
+#include "BaseSpell.h"
+#include "UObject/Class.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -41,7 +41,8 @@ void APlayerCharacter::SetSpellIndicatorLocation()
 	FVector PlayerViewLocation;
 	FRotator PlayerViewRotation;
 	Controller->GetPlayerViewPoint(PlayerViewLocation, PlayerViewRotation);
-	FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * 5000.0f;
+	FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * 
+	SpellClass->GetDefaultObject<ABaseSpell>()->GetCastingRange();
 	FHitResult Hit;
 	if (GetWorld()->LineTraceSingleByChannel(Hit, PlayerViewLocation, LineTraceEnd, ECollisionChannel::ECC_Visibility))
 	{
@@ -134,8 +135,10 @@ void APlayerCharacter::CastSpell()
 	bIsAimingSpell = false;
 	if (SpellIndicator)
 	{
+		GetWorld()->SpawnActor<ABaseSpell>(SpellClass, SpellIndicator->GetActorLocation(), GetActorRotation());
 		SpellIndicator->Destroy();
 	}
+	 
 }
 
 FTransform APlayerCharacter::CalculateMissileSpawnTransform()
