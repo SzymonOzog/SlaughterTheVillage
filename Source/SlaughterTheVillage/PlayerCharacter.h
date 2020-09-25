@@ -23,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	void RotateSpellIndicator(float DeltaTime) const;
+	void RotateSpellIndicator(float DeltaTime);
 	void SetSpellIndicatorLocation() const;
 	void SetupMissileSpawnParams();
 	FTransform CalculateMissileSpawnTransform() const;
@@ -32,8 +32,9 @@ private:
 	void Dash();
 	void AimSpell();
 	void CastSpell();
-	
+
 	struct FActorSpawnParameters MissileSpawnParams;
+	FRotator SpellIndicatorRotator = FRotator(0.0f, 0.0f, 0.0f);
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<class ABaseMissile>> MissileClasses;
 	TSubclassOf<class ABaseMissile> MissileClass;

@@ -30,11 +30,12 @@ void APlayerCharacter::Tick(float DeltaTime)
 	}
 }
 
-void APlayerCharacter::RotateSpellIndicator(float DeltaTime) const
+void APlayerCharacter::RotateSpellIndicator(float DeltaTime)
 {
-	FRotator SpellIndicatorRotator = FRotator::ZeroRotator;
-	SpellIndicatorRotator.Roll = 100.0f * DeltaTime;
-	SpellIndicator->AddActorLocalRotation(SpellIndicatorRotator);
+	SpellIndicatorRotator.Yaw += 50.0f * DeltaTime;
+	FRotator PlayerRollRotation = FRotator::ZeroRotator;
+	PlayerRollRotation.Yaw = GetActorRotation().Yaw;
+	SpellIndicator->SetActorRotation(SpellIndicatorRotator + PlayerRollRotation);
 }
 
 void APlayerCharacter::SetSpellIndicatorLocation() const
@@ -128,6 +129,7 @@ void APlayerCharacter::AimSpell()
 	{
 		bIsAimingSpell = true;
 		SpellIndicator = GetWorld()->SpawnActor<ADecalActor>(SpellIndicatorClass, GetActorLocation(), FRotator());
+		SpellIndicatorRotator = SpellIndicator->GetActorRotation();
 	}
 }
 
