@@ -17,14 +17,13 @@ public:
 	inline float GetCastingRange() const { return CastingRange; }
 protected:
 	virtual void BeginPlay() override;
-
-private:
+	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
-	
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
-	
+
+private:	
 	UPROPERTY(EditAnywhere)
 	float CastingRange = 5000.0f;
 
