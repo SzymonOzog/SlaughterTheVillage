@@ -4,6 +4,7 @@
 #include "SpellMeteor.h"
 #include "Components/StaticMeshComponent.h"
 #include "BaseCharacter.h"
+#include "Explosion.h"
 ASpellMeteor::ASpellMeteor()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -30,6 +31,11 @@ void ASpellMeteor::OnMeteorHit(AActor* SelfActor, AActor* OtherActor, FVector No
     if(ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
     {
         Character->TakeDamage(Damage, FDamageEvent(), nullptr, this);
+    }
+    if (ExplosionClass)
+    {
+        Destroy();
+        GetWorld()->SpawnActor<AExplosion>(ExplosionClass, Hit.Location, FRotator::ZeroRotator);
     }
     Destroy();
 }

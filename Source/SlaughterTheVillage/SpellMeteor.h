@@ -27,7 +27,9 @@ private:
 	float Size = 3.0f;
 	UPROPERTY(EditDefaultsOnly)
 	float Speed = 3.0f;
-
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AExplosion> ExplosionClass;
+	
 	UFUNCTION()
 	void OnMeteorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };
