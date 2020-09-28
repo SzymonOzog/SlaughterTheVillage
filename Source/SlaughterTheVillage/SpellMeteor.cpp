@@ -15,7 +15,7 @@ ASpellMeteor::ASpellMeteor()
 void ASpellMeteor::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    FVector MeshLocation = FMath::VInterpTo(Mesh->GetRelativeLocation(), FVector::ZeroVector, DeltaTime, Speed);
+    FVector MeshLocation = FMath::VInterpConstantTo(Mesh->GetRelativeLocation(), FVector::ZeroVector, DeltaTime, Speed);
     Mesh->SetRelativeLocation(MeshLocation, true);
 }
 
