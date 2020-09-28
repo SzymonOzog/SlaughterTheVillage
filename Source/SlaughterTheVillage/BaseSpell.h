@@ -22,9 +22,10 @@ protected:
 	USceneComponent* Root;
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere)
+	float Damage = 0.0f;
 
-private:	
+private:
 	UPROPERTY(EditAnywhere)
 	float CastingRange = 5000.0f;
-
 };

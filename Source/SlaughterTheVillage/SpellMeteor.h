@@ -19,4 +19,15 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	
+private:
+	UPROPERTY(EditDefaultsOnly)
+	float SpawnHeight = 2000.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float Size = 3.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float Speed = 3.0f;
+
+	UFUNCTION()
+	void OnMeteorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };
