@@ -20,8 +20,6 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
-	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere)
 	float Damage = 0.0f;
 
