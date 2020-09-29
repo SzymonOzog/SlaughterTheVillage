@@ -29,9 +29,11 @@ private:
 	ADecalActor* Decal = nullptr;
 	UPROPERTY(EditAnywhere)
 	float SlowStrength = 2.0f;
-
+	struct FTimerHandle BurnTimerHandle;
+	
 	UFUNCTION()
 	void OnOilBeginOverlap(AActor* OverpalledActor, AActor* OtherActor);
 	UFUNCTION()
     void OnOilEndOverlap(AActor* OverpalledActor, AActor* OtherActor);
+	void Burn();
 };

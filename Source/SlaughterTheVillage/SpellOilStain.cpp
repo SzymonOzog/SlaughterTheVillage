@@ -13,6 +13,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/World.h"
 #include "Engine/DecalActor.h"
+#include "BaseCharacter.h"
+#include "TimerManager.h"
 
 ASpellOilStain::ASpellOilStain()
 {
@@ -40,6 +42,7 @@ void ASpellOilStain::OnOilBeginOverlap(AActor* OverpalledActor, AActor* OtherAct
     {
         Decal->Destroy();
         Decal = GetWorld()->SpawnActor<ADecalActor>(BurningOilStainClass, GetActorLocation(), GetActorRotation());
+        GetWorldTimerManager().SetTimer(BurnTimerHandle, this, &ASpellOilStain::Burn, 1.0f, true, 0.5f);
     }
 }
 
@@ -53,5 +56,19 @@ void ASpellOilStain::OnOilEndOverlap(AActor* OverpalledActor, AActor* OtherActor
     {
         Decal->Destroy();
         Decal = GetWorld()->SpawnActor<ADecalActor>(OilStainClass, GetActorLocation(), GetActorRotation());
+        GetWorldTimerManager().ClearTimer(BurnTimerHandle);
+    }
+}
+
+void ASpellOilStain::Burn()
+{
+    TArray<AActor*> OverlappingActors;
+    GetOverlappingActors(OverlappingActors);
+    for (AActor* OverlappedActor : OverlappingActors)
+    {
+        if(ABaseCharacter* Character = Cast<ABaseCharacter>(OverlappedActor))
+        {
+            Character->TakeDamage(Damage, FDamageEvent(), nullptr, this);
+        }
     }
 }
