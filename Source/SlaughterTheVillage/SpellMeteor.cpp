@@ -2,28 +2,31 @@
 
 
 #include "SpellMeteor.h"
-#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "BaseCharacter.h"
 #include "Explosion.h"
+#include "DestructibleComponent.h"
+
 ASpellMeteor::ASpellMeteor()
 {
     PrimaryActorTick.bCanEverTick = true;
-    Mesh->SetRelativeLocation(FVector(0.0f, 0.0f, SpawnHeight));
-    Mesh->SetWorldScale3D(FVector(Size));
-    
+    DestructibleComponent = CreateDefaultSubobject<UDestructibleComponent>(TEXT("Destructible Mesh"));
+    DestructibleComponent->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ASpellMeteor::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    FVector MeshLocation = FMath::VInterpConstantTo(Mesh->GetRelativeLocation(), FVector::ZeroVector, DeltaTime, Speed);
-    Mesh->SetRelativeLocation(MeshLocation, true);
+    FVector MeshLocation = FMath::VInterpConstantTo(DestructibleComponent->GetRelativeLocation(), FVector::ZeroVector, DeltaTime, Speed);
+    DestructibleComponent->SetRelativeLocation(MeshLocation, true);
 }
 
 void ASpellMeteor::BeginPlay()
 {
     Super::BeginPlay();
 	OnActorHit.AddDynamic(this, &ASpellMeteor::OnMeteorHit);
+    DestructibleComponent->SetRelativeLocation(FVector(0.0f,0.0f, SpawnHeight));
+    DestructibleComponent->SetWorldScale3D(FVector(Size)); //TODO make it work
 }
 
 void ASpellMeteor::OnMeteorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
@@ -32,10 +35,6 @@ void ASpellMeteor::OnMeteorHit(AActor* SelfActor, AActor* OtherActor, FVector No
     {
         Character->TakeDamage(Damage, FDamageEvent(), nullptr, this);
     }
-    if (ExplosionClass)
-    {
-        Destroy();
-        GetWorld()->SpawnActor<AExplosion>(ExplosionClass, Hit.Location, FRotator::ZeroRotator);
-    }
-    Destroy();
+    DestructibleComponent->ApplyDamage(1.0f, DestructibleComponent->GetComponentLocation(), NormalImpulse, 100.0f);
+    OnActorHit.RemoveDynamic(this, &ASpellMeteor::OnMeteorHit);
 }
