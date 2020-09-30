@@ -28,8 +28,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	float Speed = 10.0f;
 	UPROPERTY(EditAnywhere)
+	float DisappearSpeed = 10.0f;
+	
+	UPROPERTY(EditAnywhere)
 	float TravelDistance = 3000.0f;
 	FVector Destination;
+	FVector DisappearDestination;
+	bool bIsAtDestination = false;
 	
 	UFUNCTION()
 	void OnWaveBeginOverlap(AActor* OverpalledActor, AActor* OtherActor);

@@ -16,8 +16,24 @@ ASpellWave::ASpellWave()
 void ASpellWave::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), Destination, DeltaTime, Speed);
-    SetActorLocation(NewLocation);
+    if(!bIsAtDestination)
+    {
+        FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), Destination, DeltaTime, Speed);
+        SetActorLocation(NewLocation);
+        if(NewLocation == Destination)
+        {
+            bIsAtDestination = true;
+        }
+    }
+    else
+    {
+        FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), DisappearDestination, DeltaTime, DisappearSpeed);
+        SetActorLocation(NewLocation);
+        if(NewLocation == DisappearDestination)
+        {
+            Destroy();
+        }
+    }
 }
 
 void ASpellWave::BeginPlay()
@@ -25,6 +41,8 @@ void ASpellWave::BeginPlay()
     Super::BeginPlay();
     OnActorBeginOverlap.AddDynamic(this, &ASpellWave::OnWaveBeginOverlap);
     Destination = GetActorLocation() + GetActorRotation().Vector() * TravelDistance;
+    DisappearDestination = Destination;
+    DisappearDestination.Z -= 1000.0f;
 }
 
 void ASpellWave::OnWaveBeginOverlap(AActor* OverpalledActor, AActor* OtherActor)
