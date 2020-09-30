@@ -22,7 +22,7 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* Mesh;
+	UStaticMeshComponent* Mesh = nullptr;
 	UPROPERTY(EditAnywhere)
 	FVector StartScale = { 0.2f, 0.2f, 0.2f };
 	UPROPERTY(EditAnywhere)

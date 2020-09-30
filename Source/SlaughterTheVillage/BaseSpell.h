@@ -19,7 +19,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(VisibleAnywhere)
-	USceneComponent* Root;
+	USceneComponent* Root = nullptr;
 	UPROPERTY(EditAnywhere)
 	float Damage = 0.0f;
 

@@ -17,7 +17,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	float DamagePerSecond = 30.0f;
 	UPROPERTY(VisibleAnywhere)
-	USceneComponent* Root;
+	USceneComponent* Root = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Mesh = nullptr;
 	UFUNCTION()

@@ -42,6 +42,7 @@ void ASpellWave::BeginPlay()
     OnActorBeginOverlap.AddDynamic(this, &ASpellWave::OnWaveBeginOverlap);
     Destination = GetActorLocation() + GetActorRotation().Vector() * TravelDistance;
     DisappearDestination = Destination;
+    //When the waves goes underground it just begins to look smaller untill it disappears
     DisappearDestination.Z -= 1000.0f;
 }
 

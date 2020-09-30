@@ -20,5 +20,5 @@ protected:
     virtual void BeginPlay() override;
 private:
     UPROPERTY(EditAnywhere)
-        UBehaviorTree* AIBehavior;
+        UBehaviorTree* AIBehavior = nullptr;
 };

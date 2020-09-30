@@ -28,7 +28,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float Speed = 3.0f;
 	UPROPERTY(EditAnywhere)
-	class UDestructibleComponent* DestructibleComponent;
+	class UDestructibleComponent* DestructibleComponent = nullptr;
 	
 	UFUNCTION()
 	void OnMeteorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);

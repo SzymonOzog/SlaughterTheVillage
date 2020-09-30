@@ -51,7 +51,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ADecalActor> SpellIndicatorClass;
 	UPROPERTY()
-	ADecalActor* SpellIndicator;
+	ADecalActor* SpellIndicator = nullptr;
 	bool bIsAimingSpell = false;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABaseSpell> SpellClass;

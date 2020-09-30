@@ -23,5 +23,5 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AExplosion> ExplosionClass;
 	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* Mesh;
+	UStaticMeshComponent* Mesh = nullptr;
 };

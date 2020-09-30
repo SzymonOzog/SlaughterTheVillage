@@ -21,7 +21,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> HUD_Class;
 	UPROPERTY()
-		UUserWidget* HUD;
+		UUserWidget* HUD = nullptr;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> LoseMessageClass;
 	UPROPERTY(EditAnywhere)
@@ -29,7 +29,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> StartMessageClass;
 	UPROPERTY()
-		UUserWidget* StartMessage;
+		UUserWidget* StartMessage = nullptr;
 
 
 	bool bPlayerStartedGame = false;
