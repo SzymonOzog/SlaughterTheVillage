@@ -51,9 +51,15 @@ void ASpellWave::OnWaveBeginOverlap(AActor* OverpalledActor, AActor* OtherActor)
     {
         FVector PushDirection = OtherActor->GetActorLocation() - GetActorLocation();
         PushDirection.Normalize();
-        //Make the push direction go more forward instead of to the sides
-        PushDirection += GetActorForwardVector();
-        PushDirection.Z = 0.0f;
-        Character->PushBack(PushDirection * PushBackStrength);
+        //The dot product of 2 unit vectors is equal to the cosine of the angle between those 2 vectors
+        //so this is just checking if the angle at witch the player was hit is the same as 
+        //the activation angle. This is to avoid pushing player back if he entered the wave from the back/side
+        if(FVector::DotProduct(PushDirection, GetActorForwardVector()) >= FMath::Cos(ActivationAngleDegrees))
+        {
+            //Make the push direction go more forward instead of to the sides
+            PushDirection += GetActorForwardVector();
+            PushDirection.Z = 0.0f;
+            Character->PushBack(PushDirection * PushBackStrength);
+        }
     }
 }

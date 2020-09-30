@@ -34,6 +34,8 @@ private:
 	FVector Destination;
 	FVector DisappearDestination;
 	bool bIsAtDestination = false;
+	UPROPERTY(EditAnywhere)
+	float ActivationAngleDegrees = 45.0f;
 	
 	UFUNCTION()
 	void OnWaveBeginOverlap(AActor* OverpalledActor, AActor* OtherActor);
