@@ -49,8 +49,11 @@ void ASpellWave::OnWaveBeginOverlap(AActor* OverpalledActor, AActor* OtherActor)
 {
     if(ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
     {
-        FVector ActorDirection = OtherActor->GetActorLocation() - GetActorLocation();
-        ActorDirection.Normalize();
-        Character->PushBack(ActorDirection * PushBackStrength);
+        FVector PushDirection = OtherActor->GetActorLocation() - GetActorLocation();
+        PushDirection.Normalize();
+        //Make the push direction go more forward instead of to the sides
+        PushDirection += GetActorForwardVector();
+        PushDirection.Z = 0.0f;
+        Character->PushBack(PushDirection * PushBackStrength);
     }
 }

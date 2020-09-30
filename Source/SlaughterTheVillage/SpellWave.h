@@ -29,7 +29,6 @@ private:
 	float Speed = 10.0f;
 	UPROPERTY(EditAnywhere)
 	float DisappearSpeed = 10.0f;
-	
 	UPROPERTY(EditAnywhere)
 	float TravelDistance = 3000.0f;
 	FVector Destination;
