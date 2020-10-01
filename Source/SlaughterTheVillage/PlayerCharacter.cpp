@@ -145,7 +145,7 @@ void APlayerCharacter::AimSpell()
 	if (SpellIndicatorClass)
 	{
 		bIsAimingSpell = true;
-		SpellIndicator = GetWorld()->SpawnActor<ADecalActor>(SpellIndicatorClass, GetActorLocation(), FRotator());
+		SpellIndicator = GetWorld()->SpawnActor<ADecalActor>(SpellIndicatorClass, GetActorLocation(), FRotator::ZeroRotator);
 		SpellIndicatorRotator = SpellIndicator->GetActorRotation();
 	}
 }
