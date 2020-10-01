@@ -7,7 +7,9 @@
 #include "Engine/DecalActor.h"
 #include "GameFramework/PlayerController.h"
 #include "BaseSpell.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UObject/Class.h"
+#include "Explosion.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -67,14 +69,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction(TEXT("NextMissile"), IE_Pressed, this, &APlayerCharacter::NextMissile);
 	PlayerInputComponent->BindAction(TEXT("PreviousMissile"), IE_Pressed, this, &APlayerCharacter::PreviousMissile);
-	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::Dash);
+	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::RocketJump);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Pressed, this, &APlayerCharacter::AimSpell);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Released, this, &APlayerCharacter::CastSpell);
 }
 
 void APlayerCharacter::Attack()
 {
-	Super::Attack(); 
+	Super::Attack();
 	if (GetWorld()->GetTimeSeconds() - MissileLastCast < MissileCooldown)
 	{
 		return;
@@ -121,6 +123,21 @@ void APlayerCharacter::Dash()
 	}
 	DashLastCast = GetWorld()->GetTimeSeconds();
 	PushBack(GetActorRotation().Vector() * DashStrength);
+}
+
+void APlayerCharacter::RocketJump()
+{
+	if(!GetCharacterMovement()->IsFalling())
+	{
+		if(RocketJumpExplosionClass)
+		{
+			GetWorld()->SpawnActor<AExplosion>(RocketJumpExplosionClass, GetActorLocation(), GetActorRotation());
+		}
+		FVector JumpDirection = GetActorForwardVector() * RocketJumpForwardDistance;
+		JumpDirection.Z = RocketJumpHeight;
+	
+		GetCharacterMovement()->AddImpulse(JumpDirection, true);
+	}
 }
 
 void APlayerCharacter::AimSpell()

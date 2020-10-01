@@ -30,6 +30,7 @@ private:
 	void PreviousMissile();
 	void NextMissile();
 	void Dash();
+	void RocketJump();
 	void AimSpell();
 	void CastSpell();
 
@@ -48,6 +49,12 @@ private:
 	float DashLastCast = 0.0f;
 	UPROPERTY(EditDefaultsOnly)
 	float DashStrength = 300.0f;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AExplosion> RocketJumpExplosionClass;
+	UPROPERTY(EditAnywhere)
+	float RocketJumpForwardDistance = 100.0f;
+	UPROPERTY(EditAnywhere)
+	float RocketJumpHeight = 1000.0f;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ADecalActor> SpellIndicatorClass;
 	UPROPERTY()
