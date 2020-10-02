@@ -23,6 +23,8 @@ public:
 	UFUNCTION(BlueprintPure)
     inline float GetHealthPercent() const { return CurrentHealth / MaxHealth; }
 	inline float GetPlayerReach() const { return PlayerReach; }
+	void MoveForward(float AxisValue);
+	void MoveRight(float AxisValue);
 	virtual void Attack();
 	void RotateToControllerYaw();
 	inline bool IsCharacterAttacking() const { return bIsAttacking; }
@@ -35,6 +37,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 private:
 	UPROPERTY(EditDefaultsOnly)
@@ -57,8 +60,6 @@ private:
 	void SetupCharacterMovement();
 	float CalculatePlayerReach() const;
 	void HandleDeath();
-	void MoveForward(float AxisValue);
-	void MoveRight(float AxisValue);
 	void StopAttacking();
 
 

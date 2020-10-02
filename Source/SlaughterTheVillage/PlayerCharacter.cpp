@@ -77,6 +77,16 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Released, this, &APlayerCharacter::CastSpell);
 }
 
+void APlayerCharacter::SetupUndergroundInput(UInputComponent* PlayerInputComponent)
+{
+	PlayerInputComponent->ClearActionBindings();
+
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABaseCharacter::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ABaseCharacter::MoveRight);
+	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
+}
+
 void APlayerCharacter::Attack()
 {
 	Super::Attack();
@@ -150,6 +160,8 @@ void APlayerCharacter::HideUnderground()
 	FName MeshCollision = GetMesh()->GetCollisionProfileName();
 	GetCapsuleComponent()->SetCollisionProfileName(FName("Ghost"));
 	GetMesh()->SetCollisionProfileName(FName("Ghost"));
+	SetupUndergroundInput(InputComponent);
+
 	FTimerHandle Handle;
 	GetWorldTimerManager().SetTimer(Handle,
 		[this, CapsuleCollision, MeshCollision]()
@@ -157,6 +169,7 @@ void APlayerCharacter::HideUnderground()
 			GetCapsuleComponent()->SetCollisionProfileName(CapsuleCollision);
 			GetMesh()->SetCollisionProfileName(MeshCollision);
 			SetActorHiddenInGame(false);
+			SetupPlayerInputComponent(InputComponent);
 		}, HideUndergroundLength, false);
 }
 
