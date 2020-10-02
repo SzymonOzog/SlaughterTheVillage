@@ -32,7 +32,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 	float MissileSpeed = 4000.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	float GravityScale = 1.0f;
+	float GravityScale = 0.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	float Damage = 20.0f;
 	class ABaseCharacter* OwningPlayer = nullptr;
