@@ -10,6 +10,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UObject/Class.h"
 #include "Explosion.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "TimerManager.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -69,7 +72,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction(TEXT("NextMissile"), IE_Pressed, this, &APlayerCharacter::NextMissile);
 	PlayerInputComponent->BindAction(TEXT("PreviousMissile"), IE_Pressed, this, &APlayerCharacter::PreviousMissile);
-	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::RocketJump);
+	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::HideUnderground);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Pressed, this, &APlayerCharacter::AimSpell);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Released, this, &APlayerCharacter::CastSpell);
 }
@@ -138,6 +141,23 @@ void APlayerCharacter::RocketJump()
 	
 		GetCharacterMovement()->AddImpulse(JumpDirection, true);
 	}
+}
+
+void APlayerCharacter::HideUnderground()
+{
+	SetActorHiddenInGame(true);
+	FName CapsuleCollision = GetCapsuleComponent()->GetCollisionProfileName();
+	FName MeshCollision = GetMesh()->GetCollisionProfileName();
+	GetCapsuleComponent()->SetCollisionProfileName(FName("Ghost"));
+	GetMesh()->SetCollisionProfileName(FName("Ghost"));
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer(Handle,
+		[this, CapsuleCollision, MeshCollision]()
+		{
+			GetCapsuleComponent()->SetCollisionProfileName(CapsuleCollision);
+			GetMesh()->SetCollisionProfileName(MeshCollision);
+			SetActorHiddenInGame(false);
+		}, HideUndergroundLength, false);
 }
 
 void APlayerCharacter::AimSpell()

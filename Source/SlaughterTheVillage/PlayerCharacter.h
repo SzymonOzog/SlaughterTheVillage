@@ -31,6 +31,7 @@ private:
 	void NextMissile();
 	void Dash();
 	void RocketJump();
+	void HideUnderground();
 	void AimSpell();
 	void CastSpell();
 
@@ -55,6 +56,8 @@ private:
 	float RocketJumpForwardDistance = 100.0f;
 	UPROPERTY(EditAnywhere)
 	float RocketJumpHeight = 1000.0f;
+	UPROPERTY(EditAnywhere)
+	float HideUndergroundLength = 1.5f;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ADecalActor> SpellIndicatorClass;
 	UPROPERTY()
