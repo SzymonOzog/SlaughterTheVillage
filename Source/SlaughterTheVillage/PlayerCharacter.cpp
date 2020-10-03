@@ -72,7 +72,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction(TEXT("NextMissile"), IE_Pressed, this, &APlayerCharacter::NextMissile);
 	PlayerInputComponent->BindAction(TEXT("PreviousMissile"), IE_Pressed, this, &APlayerCharacter::PreviousMissile);
-	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::HideUnderground);
+	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::RocketJump);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Pressed, this, &APlayerCharacter::AimSpell);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Released, this, &APlayerCharacter::CastSpell);
 }
@@ -150,6 +150,8 @@ void APlayerCharacter::RocketJump()
 		JumpDirection.Z = RocketJumpHeight;
 	
 		GetCharacterMovement()->AddImpulse(JumpDirection, true);
+		JumpCurrentCount--;
+		
 	}
 }
 
