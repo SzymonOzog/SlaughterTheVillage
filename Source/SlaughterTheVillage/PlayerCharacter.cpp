@@ -72,15 +72,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction(TEXT("NextMissile"), IE_Pressed, this, &APlayerCharacter::NextMissile);
 	PlayerInputComponent->BindAction(TEXT("PreviousMissile"), IE_Pressed, this, &APlayerCharacter::PreviousMissile);
-	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::RocketJump);
+	PlayerInputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &APlayerCharacter::HideUnderground);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Pressed, this, &APlayerCharacter::AimSpell);
 	PlayerInputComponent->BindAction(TEXT("CastSpell"), IE_Released, this, &APlayerCharacter::CastSpell);
 }
 
 void APlayerCharacter::SetupUndergroundInput(UInputComponent* PlayerInputComponent)
 {
-	PlayerInputComponent->ClearActionBindings();
-
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABaseCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ABaseCharacter::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
@@ -162,6 +160,7 @@ void APlayerCharacter::HideUnderground()
 	FName MeshCollision = GetMesh()->GetCollisionProfileName();
 	GetCapsuleComponent()->SetCollisionProfileName(FName("Ghost"));
 	GetMesh()->SetCollisionProfileName(FName("Ghost"));
+	InputComponent->ClearActionBindings();
 	SetupUndergroundInput(InputComponent);
 
 	FTimerHandle Handle;
