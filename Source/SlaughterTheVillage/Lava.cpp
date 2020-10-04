@@ -34,25 +34,21 @@ void ALava::OnLavaBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
 	if (ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor))
 	{
-		FTimerDelegate TimerDelegate;
-		TimerDelegate.BindUFunction(this, FName("DealLavaDamage"), Character);
-		GetWorldTimerManager().SetTimer(TimerHandle, TimerDelegate, 1.0f, true, 1.0f);
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &ALava::DealLavaDamage, 1.0f, true, 1.0f);
 	}
 
 }
 
-void ALava::DealLavaDamage(ABaseCharacter* Character)
+void ALava::DealLavaDamage()
 {
 	TArray<AActor*> OverlappingActors;
 	GetOverlappingActors(OverlappingActors);
 	for (AActor* OverlappedActor : OverlappingActors)
 	{
-		if (Character == OverlappedActor)
+		if (ABaseCharacter* Character = Cast<ABaseCharacter>(OverlappedActor))
 		{
 			Character->TakeDamage(DamagePerSecond, FDamageEvent(), nullptr, this);
-			return;
 		}
 	}
-	GetWorldTimerManager().ClearTimer(TimerHandle);
 }
 

@@ -29,5 +29,5 @@ protected:
 private:
 	struct FTimerHandle TimerHandle;
 	UFUNCTION()
-	void DealLavaDamage(class ABaseCharacter* Character);
+	void DealLavaDamage();
 };
