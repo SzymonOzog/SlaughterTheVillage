@@ -21,7 +21,7 @@ ALava::ALava()
 void ALava::BeginPlay()
 {
 	Super::BeginPlay();
-	OnActorBeginOverlap.AddDynamic(this, &ALava::OnLavaBeginOverlap)
+	OnActorBeginOverlap.AddDynamic(this, &ALava::OnLavaBeginOverlap);
 }
 
 void ALava::Tick(float DeltaTime)
