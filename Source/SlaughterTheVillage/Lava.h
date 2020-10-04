@@ -20,6 +20,8 @@ public:
 	USceneComponent* Root = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Mesh = nullptr;
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* Fire = nullptr;
 	UFUNCTION()
     virtual void OnLavaBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 

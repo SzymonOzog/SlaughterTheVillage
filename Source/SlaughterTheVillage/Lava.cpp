@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 ALava::ALava()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -20,8 +21,7 @@ ALava::ALava()
 void ALava::BeginPlay()
 {
 	Super::BeginPlay();
-	OnActorBeginOverlap.AddDynamic(this, &ALava::OnLavaBeginOverlap);
-	
+	OnActorBeginOverlap.AddDynamic(this, &ALava::OnLavaBeginOverlap)
 }
 
 void ALava::Tick(float DeltaTime)
@@ -48,6 +48,7 @@ void ALava::DealLavaDamage()
 		if (ABaseCharacter* Character = Cast<ABaseCharacter>(OverlappedActor))
 		{
 			Character->TakeDamage(DamagePerSecond, FDamageEvent(), nullptr, this);
+			UGameplayStatics::SpawnEmitterAttached(Fire, Character->GetMesh(), TEXT("spine_01"));
 		}
 	}
 }
