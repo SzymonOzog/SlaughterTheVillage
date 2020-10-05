@@ -155,23 +155,26 @@ void APlayerCharacter::RocketJump()
 
 void APlayerCharacter::HideUnderground()
 {
-	SetActorHiddenInGame(true);
-	FName CapsuleCollision = GetCapsuleComponent()->GetCollisionProfileName();
-	FName MeshCollision = GetMesh()->GetCollisionProfileName();
-	GetCapsuleComponent()->SetCollisionProfileName(FName("Ghost"));
-	GetMesh()->SetCollisionProfileName(FName("Ghost"));
-	InputComponent->ClearActionBindings();
-	SetupUndergroundInput(InputComponent);
+	if(!GetCharacterMovement()->IsFalling())
+	{
+		SetActorHiddenInGame(true);
+		FName CapsuleCollision = GetCapsuleComponent()->GetCollisionProfileName();
+		FName MeshCollision = GetMesh()->GetCollisionProfileName();
+		GetCapsuleComponent()->SetCollisionProfileName(FName("Ghost"));
+		GetMesh()->SetCollisionProfileName(FName("Ghost"));
+		InputComponent->ClearActionBindings();
+		SetupUndergroundInput(InputComponent);
 
-	FTimerHandle Handle;
-	GetWorldTimerManager().SetTimer(Handle,
-		[this, CapsuleCollision, MeshCollision]()
-		{
-			GetCapsuleComponent()->SetCollisionProfileName(CapsuleCollision);
-			GetMesh()->SetCollisionProfileName(MeshCollision);
-			SetActorHiddenInGame(false);
-			SetupPlayerInputComponent(InputComponent);
-		}, HideUndergroundLength, false);
+		FTimerHandle Handle;
+		GetWorldTimerManager().SetTimer(Handle,
+            [this, CapsuleCollision, MeshCollision]()
+            {
+                GetCapsuleComponent()->SetCollisionProfileName(CapsuleCollision);
+                GetMesh()->SetCollisionProfileName(MeshCollision);
+                SetActorHiddenInGame(false);
+                SetupPlayerInputComponent(InputComponent);
+            }, HideUndergroundLength, false);
+	}
 }
 
 void APlayerCharacter::AimSpell()
